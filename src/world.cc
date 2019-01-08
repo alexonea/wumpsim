@@ -22,10 +22,14 @@
 
 namespace wumpus
 {
-  World::World(unsigned iRows, unsigned iCols)
-  : m_nRows{iRows}
-  , m_nCols{iCols}
+  World::World(unsigned nRows, unsigned nCols)
+  : m_nRows{nRows}
+  , m_nCols{nCols}
   {
-    m_vpTiles = std::unique_ptr<Tile[]>(new Tile[iCols * iRows]);
+    unsigned long nTiles = nRows * nCols;
+    m_vpTiles.reserve(nTiles);
+
+    while (nTiles--)
+      m_vpTiles[nTiles] = std::make_shared<Tile>();
   } 
 }

@@ -1,5 +1,5 @@
 /*
- *  world.h
+ *  player.h
  *
  *  Copyright (C) 2019 Alexandru N. Onea <alexandru.onea@toporcomputing.com>
  *
@@ -18,23 +18,52 @@
  *
  */
 
-#ifndef SRC_WORLD_H
-#define SRC_WORLD_H 1
+#ifndef SRC_PLAYER_H
+#define SRC_PLAYER_H 1
 
-#include <vector>
-
-#include "tile.h"
+#include <cstdint>
 
 namespace wumpus
 {
-  class World
+  enum Sensor
+  {
+    BREEZE = 0,
+    STENCH,
+    GLTTER,
+    ROAR,
+    BUMP,
+  };
+
+  enum PlayerOrientation
+  {
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+  };
+
+  struct SensorData
+  {
+    std::uint8_t data;
+
+    SensorData() : data{0} {};
+
+    SensorData& set       (Sensor sensor) noexcept;
+    SensorData& clear     (Sensor sensor) noexcept;
+    bool        isActive  (Sensor sensor) const noexcept;
+  };
+
+  class Player
   {
   public:
-    World(unsigned nRows, unsigned nCols);
+    Player(PlayerOrientation eOrientation, unsigned nArrows = 1) noexcept;
+    Player(unsigned nArrows = 1) noexcept;
+
+    void updateSensors(const SensorData& sensors) noexcept;
   private:
-    unsigned             m_nRows;
-    unsigned             m_nCols;
-    std::vector<TilePtr> m_vpTiles;
+    unsigned          m_nArrows;
+    SensorData        m_sensors;
+    PlayerOrientation m_eOrientation;
   };
 }
 

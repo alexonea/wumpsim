@@ -21,41 +21,49 @@
 #ifndef SRC_TILE_H
 #define SRC_TILE_H 1
 
-#include <cstdint>
+#include <memory>
+
+#include "player.h"
 
 namespace wumpus
 {
-  enum Sensor
-  {
-    BREEZE = 0,
-    STENCH,
-    GLTTER,
-    ROAR,
-    BUMP,
-  };
-
   enum TileContent
   {
     EMPTY = 0,
-    PLAYER,
     PIT,
     WUMPUS,
     GOLD,
   };
 
-  using TileSensors = std::uint8_t;
+  class Tile;
+  using TilePtr = std::shared_ptr<Tile>;
 
   class Tile
   {
   public:
-    Tile(TileContent eContent = EMPTY);
-    
-    void setSensor    (Sensor sensor) noexcept;
-    void clearSensor  (Sensor sensor) noexcept;
-    bool getSensor    (Sensor sensor) const noexcept;
+    Tile(TileContent eContent = EMPTY) noexcept;
   private:
-    TileSensors m_sensors;
     TileContent m_eContent;
+
+    /*
+     * Each tile holds 4 pointers to the neighbouring tiles. This allows for
+     * two "realistic" effects: 1) each player (if more than one) can act
+     * independently and in parallel (with proper synchronization) and 2) the
+     * tiles can be configured in non-grid patterns and allow loops, shortcuts
+     * and more. Shared pointers are used because one tile is referenced by
+     * more than one neighbouring tile.
+     */
+    TilePtr                 m_pUp;
+    TilePtr                 m_pDown;
+    TilePtr                 m_pLeft;
+    TilePtr                 m_pRight;
+
+    /*
+     * Each tile also holds a pointer to a player. This guarantees that only
+     * one player can occupy a tile at all times. Moving a player from one time
+     * to another is done by moving the pointer.
+     */
+    std::unique_ptr<Player> m_pPlayer;
   };
 }
 

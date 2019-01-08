@@ -1,5 +1,5 @@
 /*
- *  tile.cc
+ *  player.cc
  *
  *  Copyright (C) 2019 Alexandru N. Onea <alexandru.onea@toporcomputing.com>
  *
@@ -18,11 +18,43 @@
  *
  */
 
-#include "tile.h"
+#include "player.h"
 
 namespace wumpus
 {
-  Tile::Tile(TileContent eContent) noexcept
-  : m_eContent{eContent}
+  SensorData&
+  SensorData::set(Sensor sensor) noexcept
+  {
+    data |= (1 << sensor);
+    return *this;
+  }
+
+  SensorData&
+  SensorData::clear(Sensor sensor) noexcept
+  {
+    data &= ~(1 << sensor);
+    return *this;
+  }
+
+  bool
+  SensorData::isActive(Sensor sensor) const noexcept
+  {
+    return (data & (1 << sensor));
+  }
+
+  Player::Player(PlayerOrientation eOrientation, unsigned nArrows) noexcept
+  : m_eOrientation{eOrientation}
+  , m_nArrows{nArrows}
   {}
+
+  Player::Player(unsigned nArrows) noexcept
+  : m_eOrientation{RIGHT}
+  , m_nArrows{nArrows}
+  {}
+
+  void
+  Player::updateSensors(const SensorData& sensors) noexcept
+  {
+    m_sensors = sensors;
+  }
 }
