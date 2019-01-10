@@ -42,6 +42,11 @@ namespace wumpus
   {
   public:
     Tile(TileContent eContent = EMPTY) noexcept;
+
+    void resetUp    (const TilePtr& pTile);
+    void resetDown  (const TilePtr& pTile);
+    void resetLeft  (const TilePtr& pTile);
+    void resetRight (const TilePtr& pTile);
   private:
     TileContent m_eContent;
 

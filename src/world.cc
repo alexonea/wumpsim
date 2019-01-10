@@ -27,9 +27,77 @@ namespace wumpus
   , m_nCols{nCols}
   {
     unsigned long nTiles = nRows * nCols;
-    m_vpTiles.reserve(nTiles);
+    m_vpTiles.resize(nTiles);
 
-    while (nTiles--)
-      m_vpTiles[nTiles] = std::make_shared<Tile>();
-  } 
+    PosIndex p = 0;
+    while (p < nTiles)
+      /*
+       * [10.01.2019] valgrind reports leaks of memory which is allocated here
+       */
+      m_vpTiles[p++].reset(new Tile{});
+
+    for (p = 0; p < nTiles; ++p)
+    {
+      PosIndex up     = nextUp(p);
+      PosIndex down   = nextDown(p);
+      PosIndex left   = nextLeft(p);
+      PosIndex right  = nextRight(p);
+
+      auto & pTile = m_vpTiles[p];
+
+      if (isValid(up))
+        pTile->resetUp(m_vpTiles[up]);
+
+      if (isValid(down))
+        pTile->resetDown(m_vpTiles[down]);
+
+      if (isValid(left))
+        pTile->resetDown(m_vpTiles[left]);
+
+      if (isValid(right))
+        pTile->resetDown(m_vpTiles[right]);
+    }
+  }
+
+  PosIndex
+  World::nextUp(PosIndex current) const noexcept
+  {
+    current -= m_nCols;
+    return isValid(current) ? current : -1;
+  }
+
+  PosIndex
+  World::nextDown(PosIndex current) const noexcept
+  {
+    current += m_nCols;
+    return isValid(current) ? current : -1;
+  }
+
+  PosIndex
+  World::nextLeft(PosIndex current) const noexcept
+  {
+    return (current % m_nCols == 0 ||
+      !isValid(current - 1)) ? -1 : (current - 1);
+  }
+
+  PosIndex
+  World::nextRight(PosIndex current) const noexcept
+  {
+    current++;
+    return (current % m_nCols == 0 ||
+      !isValid(current)) ? -1 : current;
+  }
+
+  PosIndex
+  World::toPosIndex(unsigned iX, unsigned iY) const noexcept
+  {
+    PosIndex pos = iX * m_nCols + iY;
+    return (pos >= 0 && pos < (m_nCols * m_nRows)) ? pos : -1;
+  }
+
+  bool
+  World::isValid(PosIndex current) const noexcept
+  {
+    return (current >= 0 && current < (m_nCols * m_nRows));
+  }
 }

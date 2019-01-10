@@ -25,4 +25,29 @@ namespace wumpus
   Tile::Tile(TileContent eContent) noexcept
   : m_eContent{eContent}
   {}
+
+  void
+  Tile::resetUp(const TilePtr& pTile)
+  {
+    m_pUp = pTile;
+  }
+
+  void
+  Tile::resetDown(const TilePtr& pTile)
+  {
+    m_pDown = pTile;
+  }
+
+  void
+  Tile::resetLeft(const TilePtr& pTile)
+  {
+    m_pLeft = pTile;
+  }
+
+  void
+  Tile::resetRight(const TilePtr& pTile)
+  {
+    m_pRight = pTile;
+  }
+
 }

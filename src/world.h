@@ -27,6 +27,8 @@
 
 namespace wumpus
 {
+  using PosIndex = long long;
+
   class World
   {
   public:
@@ -35,6 +37,13 @@ namespace wumpus
     unsigned             m_nRows;
     unsigned             m_nCols;
     std::vector<TilePtr> m_vpTiles;
+
+    PosIndex nextUp     (PosIndex current) const noexcept;
+    PosIndex nextDown   (PosIndex current) const noexcept;
+    PosIndex nextLeft   (PosIndex current) const noexcept;
+    PosIndex nextRight  (PosIndex current) const noexcept;
+    PosIndex toPosIndex (unsigned iX, unsigned iY) const noexcept;
+    bool     isValid    (PosIndex current) const noexcept;
   };
 }
 
