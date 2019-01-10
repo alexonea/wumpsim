@@ -1,9 +1,8 @@
-set (SOURCES
+add_subdirectory(core)
+
+set(SOURCES
   main.cpp
-  tile.cc
-  world.cc
-  player.cc
-  error.cc
 )
 
 add_executable(wumpsim ${SOURCES})
+target_link_libraries(wumpsim wumpcore)
