@@ -19,6 +19,7 @@
  */
 
 #include "world.h"
+#include "error.h"
 
 namespace wumpus
 {
@@ -96,8 +97,23 @@ namespace wumpus
   }
 
   bool
+  World::isValid(unsigned iX, unsigned iY) const noexcept
+  {
+    return (iX < m_nRows && iY < m_nCols);
+  }
+
+  bool
   World::isValid(PosIndex current) const noexcept
   {
     return (current >= 0 && current < (m_nCols * m_nRows));
+  }
+
+  void
+  World::setPlayer(PlayerPtr&& pPlayer, unsigned iX, unsigned iY)
+  {
+    if (!isValid(iX, iY))
+      throw Error();
+
+    m_vpTiles[toPosIndex(iX, iY)]->setPlayer(std::move(pPlayer));
   }
 }

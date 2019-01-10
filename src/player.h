@@ -21,6 +21,7 @@
 #ifndef SRC_PLAYER_H
 #define SRC_PLAYER_H 1
 
+#include <memory>
 #include <cstdint>
 
 namespace wumpus
@@ -65,6 +66,8 @@ namespace wumpus
     SensorData        m_sensors;
     PlayerOrientation m_eOrientation;
   };
+
+  using PlayerPtr = std::unique_ptr<Player>;
 }
 
 #endif

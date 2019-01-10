@@ -24,6 +24,7 @@
 #include <vector>
 
 #include "tile.h"
+#include "player.h"
 
 namespace wumpus
 {
@@ -33,6 +34,8 @@ namespace wumpus
   {
   public:
     World(unsigned nRows, unsigned nCols);
+
+    void setPlayer(PlayerPtr&& pPlayer, unsigned iX = 1, unsigned iY = 1);
   private:
     unsigned             m_nRows;
     unsigned             m_nCols;
@@ -43,6 +46,7 @@ namespace wumpus
     PosIndex nextLeft   (PosIndex current) const noexcept;
     PosIndex nextRight  (PosIndex current) const noexcept;
     PosIndex toPosIndex (unsigned iX, unsigned iY) const noexcept;
+    bool     isValid    (unsigned iX, unsigned iY) const noexcept;
     bool     isValid    (PosIndex current) const noexcept;
   };
 }

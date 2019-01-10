@@ -1,5 +1,5 @@
 /*
- *  tile.cc
+ *  error.h
  *
  *  Copyright (C) 2019 Alexandru N. Onea <alexandru.onea@toporcomputing.com>
  *
@@ -18,47 +18,21 @@
  *
  */
 
-#include "tile.h"
+#ifndef SRC_ERROR_H
+#define SRC_ERROR_H 1
+
+#include <stdexcept>
+#include <string>
 
 namespace wumpus
 {
-  Tile::Tile(TileContent eContent) noexcept
-  : m_eContent{eContent}
-  {}
-
-  void
-  Tile::resetUp(const TilePtr& pTile)
+  class Error : public std::runtime_error
   {
-    m_pUp = pTile;
-  }
-
-  void
-  Tile::resetDown(const TilePtr& pTile)
-  {
-    m_pDown = pTile;
-  }
-
-  void
-  Tile::resetLeft(const TilePtr& pTile)
-  {
-    m_pLeft = pTile;
-  }
-
-  void
-  Tile::resetRight(const TilePtr& pTile)
-  {
-    m_pRight = pTile;
-  }
-
-  void
-  Tile::setPlayer(PlayerPtr&& pPlayer)
-  {
-    m_pPlayer = std::move(pPlayer);
-  }
-
-  PlayerPtr&&
-  Tile::releasePlayer()
-  {
-    return std::move(m_pPlayer);
-  }
+  public:
+    Error();
+    Error(const std::string& sError);
+    virtual ~Error() = default;
+  };
 }
+
+#endif

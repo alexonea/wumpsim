@@ -1,5 +1,5 @@
 /*
- *  tile.cc
+ *  error.cc
  *
  *  Copyright (C) 2019 Alexandru N. Onea <alexandru.onea@toporcomputing.com>
  *
@@ -18,47 +18,15 @@
  *
  */
 
-#include "tile.h"
+#include "error.h"
 
 namespace wumpus
 {
-  Tile::Tile(TileContent eContent) noexcept
-  : m_eContent{eContent}
+  Error::Error()
+  : std::runtime_error{"Bad operation"}
   {}
 
-  void
-  Tile::resetUp(const TilePtr& pTile)
-  {
-    m_pUp = pTile;
-  }
-
-  void
-  Tile::resetDown(const TilePtr& pTile)
-  {
-    m_pDown = pTile;
-  }
-
-  void
-  Tile::resetLeft(const TilePtr& pTile)
-  {
-    m_pLeft = pTile;
-  }
-
-  void
-  Tile::resetRight(const TilePtr& pTile)
-  {
-    m_pRight = pTile;
-  }
-
-  void
-  Tile::setPlayer(PlayerPtr&& pPlayer)
-  {
-    m_pPlayer = std::move(pPlayer);
-  }
-
-  PlayerPtr&&
-  Tile::releasePlayer()
-  {
-    return std::move(m_pPlayer);
-  }
+  Error::Error(const std::string& sError)
+  : std::runtime_error{sError}
+  {}
 }

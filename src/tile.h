@@ -47,6 +47,9 @@ namespace wumpus
     void resetDown  (const TilePtr& pTile);
     void resetLeft  (const TilePtr& pTile);
     void resetRight (const TilePtr& pTile);
+
+    void        setPlayer     (PlayerPtr&& pPlayer);
+    PlayerPtr&& releasePlayer ();
   private:
     TileContent m_eContent;
 
@@ -58,17 +61,17 @@ namespace wumpus
      * and more. Shared pointers are used because one tile is referenced by
      * more than one neighbouring tile.
      */
-    TilePtr                 m_pUp;
-    TilePtr                 m_pDown;
-    TilePtr                 m_pLeft;
-    TilePtr                 m_pRight;
+    TilePtr m_pUp;
+    TilePtr m_pDown;
+    TilePtr m_pLeft;
+    TilePtr m_pRight;
 
     /*
      * Each tile also holds a pointer to a player. This guarantees that only
      * one player can occupy a tile at all times. Moving a player from one time
      * to another is done by moving the pointer.
      */
-    std::unique_ptr<Player> m_pPlayer;
+    PlayerPtr m_pPlayer;
   };
 }
 
