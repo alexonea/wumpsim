@@ -18,8 +18,8 @@
  *
  */
 
-#ifndef SRC_PLAYER_H
-#define SRC_PLAYER_H 1
+#ifndef SRC_CORE_PLAYER_H
+#define SRC_CORE_PLAYER_H 1
 
 #include <memory>
 #include <cstdint>

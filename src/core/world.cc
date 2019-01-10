@@ -18,8 +18,8 @@
  *
  */
 
-#include "world.h"
-#include "error.h"
+#include <core/world.h>
+#include <core/error.h>
 
 namespace wumpus
 {

@@ -18,12 +18,12 @@
  *
  */
 
-#ifndef SRC_TILE_H
-#define SRC_TILE_H 1
+#ifndef SRC_CORE_TILE_H
+#define SRC_CORE_TILE_H 1
 
 #include <memory>
 
-#include "player.h"
+#include <core/player.h>
 
 namespace wumpus
 {

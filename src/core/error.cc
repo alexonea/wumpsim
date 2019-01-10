@@ -18,7 +18,7 @@
  *
  */
 
-#include "error.h"
+#include <core/error.h>
 
 namespace wumpus
 {

@@ -18,8 +18,8 @@
  *
  */
 
-#ifndef SRC_ERROR_H
-#define SRC_ERROR_H 1
+#ifndef SRC_CORE_ERROR_H
+#define SRC_CORE_ERROR_H 1
 
 #include <stdexcept>
 #include <string>

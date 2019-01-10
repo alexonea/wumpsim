@@ -18,13 +18,13 @@
  *
  */
 
-#ifndef SRC_WORLD_H
-#define SRC_WORLD_H 1
+#ifndef SRC_CORE_WORLD_H
+#define SRC_CORE_WORLD_H 1
 
 #include <vector>
 
-#include "tile.h"
-#include "player.h"
+#include <core/tile.h>
+#include <core/player.h>
 
 namespace wumpus
 {

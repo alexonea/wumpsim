@@ -18,7 +18,7 @@
  *
  */
 
-#include "player.h"
+#include <core/player.h>
 
 namespace wumpus
 {
