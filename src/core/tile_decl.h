@@ -1,5 +1,5 @@
 /*
- *  agent.cc
+ *  tile_decl.h
  *
  *  Copyright (C) 2019 Alexandru N. Onea <alexandru.onea@toporcomputing.com>
  *
@@ -18,13 +18,15 @@
  *
  */
 
-#include <core/agent.h>
+#ifndef SRC_CORE_TILE_DECL_H
+#define SRC_CORE_TILE_DECL_H 1
+
+#include <memory>
 
 namespace wumpus
 {
-  Action
-  Agent::next(const Percept& sensors)
-  {
-    return doNext(sensors);
-  }
+  class Tile;
+  using TilePtr = std::shared_ptr<Tile>;
 }
+
+#endif

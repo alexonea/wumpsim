@@ -19,7 +19,10 @@
  */
 
 #include <core/world.h>
+
 #include <core/error.h>
+#include <core/room.h>
+#include <core/player.h>
 
 namespace wumpus
 {

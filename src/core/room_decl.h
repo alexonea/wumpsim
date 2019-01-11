@@ -1,5 +1,5 @@
 /*
- *  agent.cc
+ *  room_decl.h
  *
  *  Copyright (C) 2019 Alexandru N. Onea <alexandru.onea@toporcomputing.com>
  *
@@ -18,13 +18,15 @@
  *
  */
 
-#include <core/agent.h>
+#ifndef SRC_CORE_ROOM_DECL_H
+#define SRC_CORE_ROOM_DECL_H 1
+
+#include <memory>
 
 namespace wumpus
 {
-  Action
-  Agent::next(const Percept& sensors)
-  {
-    return doNext(sensors);
-  }
+  class Room;
+  using RoomPtr = std::shared_ptr<Room>;
 }
+
+#endif

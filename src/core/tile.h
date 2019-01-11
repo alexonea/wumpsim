@@ -20,14 +20,11 @@
 
 #ifndef SRC_CORE_TILE_H
 #define SRC_CORE_TILE_H 1
-
-#include <memory>
+ 
+#include <core/tile_decl.h>
 
 namespace wumpus
 {
-  class Tile;
-  using TilePtr = std::shared_ptr<Tile>;
-
   class Tile
   {
   public:

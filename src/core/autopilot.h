@@ -24,25 +24,17 @@
 #include <memory>
 
 #include <core/agent.h>
+#include <core/path_decl.h>
 
 namespace wumpus
 {
-  /*
-   * [12.01.2018] This needs to be fixed. Fw declared here because of
-   *              cross-references between agent.h, sensor.h and autopilot.h
-   *
-   *              Possible solution is to create fw decl headers for most types
-   */
-  class Path;
-  using PathPtr = std::shared_ptr<Path>;
-
   class AutoPilot : public Agent
   {
   public:
     AutoPilot() = default;
     virtual ~AutoPilot() = default;
   private:
-    virtual Action doNext(const SensorData& sensors) override;
+    virtual Action doNext(const Percept& sensors) override;
 
     PathPtr m_pRoot;
   };

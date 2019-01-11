@@ -23,7 +23,7 @@
 namespace wumpus
 {
   Action
-  AutoPilot::doNext(const SensorData& sensors)
+  AutoPilot::doNext(const Percept& sensors)
   {
     return FORWARD;
   }

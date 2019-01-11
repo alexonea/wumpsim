@@ -21,22 +21,10 @@
 #ifndef SRC_CORE_PLAYER_H
 #define SRC_CORE_PLAYER_H 1
 
-#include <memory>
-
-#include <core/sensor.h>
+#include <core/player_decl.h>
 
 namespace wumpus
 {
-  enum PlayerOrientation
-  {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT,
-  };
-
-  using Percept = SensorData<Sensor>;
-
   class Player
   {
   public:
@@ -49,8 +37,7 @@ namespace wumpus
     Percept           m_sensors;
     PlayerOrientation m_eOrientation;
   };
-
-  using PlayerPtr = std::unique_ptr<Player>;
 }
+
 
 #endif

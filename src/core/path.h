@@ -21,21 +21,13 @@
 #ifndef SRC_CORE_PATH_H
 #define SRC_CORE_PATH_H 1
 
-#include <memory>
+#include <core/path_decl.h>
 
 #include <core/sensor.h>
 #include <core/tile.h>
 
 namespace wumpus
 {
-  enum PathContent
-  {
-    UNKNOWN = 0,
-    OK,
-    PIT,
-    WUMPUS,
-  };
-
   using Guess = SensorData<PathContent>;
 
   class Path : public Tile
@@ -48,8 +40,6 @@ namespace wumpus
   private:
     Guess m_eGuess;
   };
-
-  using PathPtr = std::shared_ptr<Path>;
 }
 
 #endif

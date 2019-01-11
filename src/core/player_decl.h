@@ -1,5 +1,5 @@
 /*
- *  agent.cc
+ *  player_decl.h
  *
  *  Copyright (C) 2019 Alexandru N. Onea <alexandru.onea@toporcomputing.com>
  *
@@ -18,13 +18,27 @@
  *
  */
 
-#include <core/agent.h>
+#ifndef SRC_CORE_PLAYER_DECL_H
+#define SRC_CORE_PLAYER_DECL_H 1
+
+#include <memory>
+
+#include <core/sensor.h>
 
 namespace wumpus
 {
-  Action
-  Agent::next(const Percept& sensors)
+  enum PlayerOrientation
   {
-    return doNext(sensors);
-  }
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+  };
+
+  using Percept = SensorData<Sensor>;
+
+  class Player;
+  using PlayerPtr = std::unique_ptr<Player>;
 }
+
+#endif

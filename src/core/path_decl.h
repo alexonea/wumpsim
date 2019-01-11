@@ -1,5 +1,5 @@
 /*
- *  agent.cc
+ *  path_decl.h
  *
  *  Copyright (C) 2019 Alexandru N. Onea <alexandru.onea@toporcomputing.com>
  *
@@ -18,13 +18,27 @@
  *
  */
 
-#include <core/agent.h>
+#ifndef SRC_CORE_PATH_DECL_H
+#define SRC_CORE_PATH_DECL_H 1
+
+#include <memory>
+
+#include <core/sensor.h>
 
 namespace wumpus
 {
-  Action
-  Agent::next(const Percept& sensors)
+  enum PathContent
   {
-    return doNext(sensors);
-  }
+    UNKNOWN = 0,
+    OK,
+    PIT,
+    WUMPUS,
+  };
+
+  using Guess = SensorData<PathContent>;
+
+  class Path;
+  using PathPtr = std::shared_ptr<Path>;
 }
+
+#endif

@@ -23,8 +23,8 @@
 
 #include <vector>
 
-#include <core/room.h>
-#include <core/player.h>
+#include <core/room_decl.h>
+#include <core/player_decl.h>
 
 namespace wumpus
 {

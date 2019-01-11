@@ -20,6 +20,8 @@
 
 #include <core/room.h>
 
+#include <core/player.h>
+
 namespace wumpus
 {
   Room::Room(const RoomContent& eContent) noexcept

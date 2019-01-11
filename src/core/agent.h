@@ -21,6 +21,8 @@
 #ifndef SRC_AGENT_H
 #define SRC_AGENT_H 1
 
+#include <core/player_decl.h>
+
 namespace wumpus
 {
   enum Action
@@ -33,15 +35,13 @@ namespace wumpus
     CLIMB,
   };
 
-  struct SensorData;
-
   class Agent
   {
   public:
     virtual ~Agent();
-    Action next(const SensorData& sensors);
+    Action next(const Percept& sensors);
   private:
-    virtual Action doNext(const SensorData& sensors) = 0;
+    virtual Action doNext(const Percept& sensors) = 0;
   };
 }
 

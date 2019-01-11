@@ -21,10 +21,10 @@
 #ifndef SRC_CORE_ROOM_H
 #define SRC_CORE_ROOM_H 1
 
-#include <memory>
+#include <core/room_decl.h>
 
 #include <core/tile.h>
-#include <core/player.h>
+#include <core/player_decl.h>
 
 namespace wumpus
 {
@@ -52,8 +52,6 @@ namespace wumpus
      */
     PlayerPtr m_pPlayer;
   };
-
-  using RoomPtr = std::shared_ptr<Room>;
 }
 
 #endif
