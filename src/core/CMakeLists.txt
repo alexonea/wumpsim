@@ -5,6 +5,9 @@ set(SOURCES
   sensor.cc
   player.cc
   error.cc
+  agent.cc
+  autopilot.cc
+  path.cc
 )
 
 add_library(wumpcore ${SOURCES})
