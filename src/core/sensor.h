@@ -1,5 +1,5 @@
 /*
- *  player.cc
+ *  sensor.h
  *
  *  Copyright (C) 2019 Alexandru N. Onea <alexandru.onea@toporcomputing.com>
  *
@@ -18,23 +18,37 @@
  *
  */
 
-#include <core/player.h>
+#ifndef SRC_CORE_SENSOR_H
+#define SRC_CORE_SENSOR_H 1
+
+#include <cstdint>
+#include <type_traits>
 
 namespace wumpus
 {
-  Player::Player(PlayerOrientation eOrientation, unsigned nArrows) noexcept
-  : m_eOrientation{eOrientation}
-  , m_nArrows{nArrows}
-  {}
-
-  Player::Player(unsigned nArrows) noexcept
-  : m_eOrientation{RIGHT}
-  , m_nArrows{nArrows}
-  {}
-
-  void
-  Player::updateSensors(const Percept& sensors) noexcept
+  enum Sensor
   {
-    m_sensors = sensors;
-  }
+    BREEZE = 0,
+    STENCH,
+    GLTTER,
+    ROAR,
+    BUMP,
+  };
+
+  template <typename T>
+  struct SensorData
+  {
+    typedef typename std::underlying_type<T>::type TType;
+    static_assert(std::is_enum<T>::value, "SensorData needs enumeration type");
+    TType data;
+
+    SensorData(const TType& value = 0) : data{value} {};
+    SensorData(const T& value) : data{value} {};
+
+    T&    set       (T sensor) noexcept;
+    T&    clear     (T sensor) noexcept;
+    bool  isActive  (T sensor) const noexcept;
+  };
 }
+
+#endif

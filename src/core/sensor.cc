@@ -1,5 +1,5 @@
 /*
- *  player.cc
+ *  sensor.h
  *
  *  Copyright (C) 2019 Alexandru N. Onea <alexandru.onea@toporcomputing.com>
  *
@@ -18,23 +18,30 @@
  *
  */
 
-#include <core/player.h>
+#include <core/sensor.h>
 
 namespace wumpus
 {
-  Player::Player(PlayerOrientation eOrientation, unsigned nArrows) noexcept
-  : m_eOrientation{eOrientation}
-  , m_nArrows{nArrows}
-  {}
-
-  Player::Player(unsigned nArrows) noexcept
-  : m_eOrientation{RIGHT}
-  , m_nArrows{nArrows}
-  {}
-
-  void
-  Player::updateSensors(const Percept& sensors) noexcept
+  template <typename T>
+  T&
+  SensorData<T>::set(T sensor) noexcept
   {
-    m_sensors = sensors;
+    data |= (1 << sensor);
+    return *this;
+  }
+
+  template <typename T>
+  T&
+  SensorData<T>::clear(T sensor) noexcept
+  {
+    data &= ~(1 << sensor);
+    return *this;
+  }
+
+  template <typename T>
+  bool
+  SensorData<T>::isActive(T sensor) const noexcept
+  {
+    return (data & (1 << sensor));
   }
 }

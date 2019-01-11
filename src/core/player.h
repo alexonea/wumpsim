@@ -22,19 +22,11 @@
 #define SRC_CORE_PLAYER_H 1
 
 #include <memory>
-#include <cstdint>
+
+#include <core/sensor.h>
 
 namespace wumpus
 {
-  enum Sensor
-  {
-    BREEZE = 0,
-    STENCH,
-    GLTTER,
-    ROAR,
-    BUMP,
-  };
-
   enum PlayerOrientation
   {
     UP,
@@ -43,16 +35,7 @@ namespace wumpus
     RIGHT,
   };
 
-  struct SensorData
-  {
-    std::uint8_t data;
-
-    SensorData() : data{0} {};
-
-    SensorData& set       (Sensor sensor) noexcept;
-    SensorData& clear     (Sensor sensor) noexcept;
-    bool        isActive  (Sensor sensor) const noexcept;
-  };
+  using Percept = SensorData<Sensor>;
 
   class Player
   {
@@ -60,10 +43,10 @@ namespace wumpus
     Player(PlayerOrientation eOrientation, unsigned nArrows = 1) noexcept;
     Player(unsigned nArrows = 1) noexcept;
 
-    void updateSensors(const SensorData& sensors) noexcept;
+    void updateSensors(const Percept& sensors) noexcept;
   private:
     unsigned          m_nArrows;
-    SensorData        m_sensors;
+    Percept           m_sensors;
     PlayerOrientation m_eOrientation;
   };
 
