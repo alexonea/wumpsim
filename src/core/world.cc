@@ -35,7 +35,7 @@ namespace wumpus
       /*
        * [10.01.2019] valgrind reports leaks of memory which is allocated here
        */
-      m_vpTiles[p++].reset(new Tile{});
+      m_vpTiles[p++].reset(new Room{});
 
     for (p = 0; p < nTiles; ++p)
     {

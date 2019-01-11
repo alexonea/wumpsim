@@ -1,5 +1,5 @@
 /*
- *  world.h
+ *  room.h
  *
  *  Copyright (C) 2019 Alexandru N. Onea <alexandru.onea@toporcomputing.com>
  *
@@ -18,37 +18,42 @@
  *
  */
 
-#ifndef SRC_CORE_WORLD_H
-#define SRC_CORE_WORLD_H 1
+#ifndef SRC_CORE_ROOM_H
+#define SRC_CORE_ROOM_H 1
 
-#include <vector>
+#include <memory>
 
-#include <core/room.h>
+#include <core/tile.h>
 #include <core/player.h>
 
 namespace wumpus
 {
-  using PosIndex = long long;
+  enum RoomContent
+  {
+    EMPTY = 0,
+    PIT,
+    WUMPUS,
+    GOLD,
+  };
 
-  class World
+  class Room : public Tile
   {
   public:
-    World(unsigned nRows, unsigned nCols);
+    Room(const RoomContent& eContent = EMPTY) noexcept;
 
-    void setPlayer(PlayerPtr&& pPlayer, unsigned iX = 1, unsigned iY = 1);
+    void        setPlayer     (PlayerPtr&& pPlayer);
+    PlayerPtr&& releasePlayer ();
   private:
-    unsigned             m_nRows;
-    unsigned             m_nCols;
-    std::vector<RoomPtr> m_vpTiles;
-
-    PosIndex nextUp     (PosIndex current) const noexcept;
-    PosIndex nextDown   (PosIndex current) const noexcept;
-    PosIndex nextLeft   (PosIndex current) const noexcept;
-    PosIndex nextRight  (PosIndex current) const noexcept;
-    PosIndex toPosIndex (unsigned iX, unsigned iY) const noexcept;
-    bool     isValid    (unsigned iX, unsigned iY) const noexcept;
-    bool     isValid    (PosIndex current) const noexcept;
+    RoomContent m_eContent;
+    /*
+     * Each room holds a pointer to a player. This guarantees that only one
+     * player can occupy a tile at all times. Moving a player from one time
+     * to another is done by moving the pointer.
+     */
+    PlayerPtr m_pPlayer;
   };
+
+  using RoomPtr = std::shared_ptr<Room>;
 }
 
 #endif

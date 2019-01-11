@@ -1,5 +1,5 @@
 /*
- *  tile.cc
+ *  room.cc
  *
  *  Copyright (C) 2019 Alexandru N. Onea <alexandru.onea@toporcomputing.com>
  *
@@ -18,31 +18,23 @@
  *
  */
 
-#include <core/tile.h>
+#include <core/room.h>
 
 namespace wumpus
 {
-  void
-  Tile::resetUp(const TilePtr& pTile)
-  {
-    m_pUp = pTile;
-  }
+  Room::Room(const RoomContent& eContent) noexcept
+  : m_eContent{eContent}
+  {}
 
   void
-  Tile::resetDown(const TilePtr& pTile)
+  Room::setPlayer(PlayerPtr&& pPlayer)
   {
-    m_pDown = pTile;
+    m_pPlayer = std::move(pPlayer);
   }
 
-  void
-  Tile::resetLeft(const TilePtr& pTile)
+  PlayerPtr&&
+  Room::releasePlayer()
   {
-    m_pLeft = pTile;
-  }
-
-  void
-  Tile::resetRight(const TilePtr& pTile)
-  {
-    m_pRight = pTile;
+    return std::move(m_pPlayer);
   }
 }

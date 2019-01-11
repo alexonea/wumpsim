@@ -23,36 +23,22 @@
 
 #include <memory>
 
-#include <core/player.h>
-
 namespace wumpus
 {
-  enum TileContent
-  {
-    EMPTY = 0,
-    PIT,
-    WUMPUS,
-    GOLD,
-  };
-
   class Tile;
   using TilePtr = std::shared_ptr<Tile>;
 
   class Tile
   {
   public:
-    Tile(TileContent eContent = EMPTY) noexcept;
+    Tile() = default;
+    virtual ~Tile() = default;
 
     void resetUp    (const TilePtr& pTile);
     void resetDown  (const TilePtr& pTile);
     void resetLeft  (const TilePtr& pTile);
     void resetRight (const TilePtr& pTile);
-
-    void        setPlayer     (PlayerPtr&& pPlayer);
-    PlayerPtr&& releasePlayer ();
   private:
-    TileContent m_eContent;
-
     /*
      * Each tile holds 4 pointers to the neighbouring tiles. This allows for
      * two "realistic" effects: 1) each player (if more than one) can act
@@ -65,13 +51,6 @@ namespace wumpus
     TilePtr m_pDown;
     TilePtr m_pLeft;
     TilePtr m_pRight;
-
-    /*
-     * Each tile also holds a pointer to a player. This guarantees that only
-     * one player can occupy a tile at all times. Moving a player from one time
-     * to another is done by moving the pointer.
-     */
-    PlayerPtr m_pPlayer;
   };
 }
 
