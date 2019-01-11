@@ -44,4 +44,11 @@ namespace wumpus
   {
     return (data & (1 << sensor));
   }
+
+  template <typename T>
+  bool
+  SensorData<T>::isZero() const noexcept
+  {
+    return (data == 0);
+  }
 }

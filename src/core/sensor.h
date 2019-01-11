@@ -48,6 +48,7 @@ namespace wumpus
     T&    set       (T sensor) noexcept;
     T&    clear     (T sensor) noexcept;
     bool  isActive  (T sensor) const noexcept;
+    bool  isZero    ()         const noexcept;
   };
 }
 
