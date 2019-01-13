@@ -28,14 +28,6 @@
 
 namespace wumpus
 {
-  enum RoomContent
-  {
-    EMPTY = 0,
-    PIT,
-    WUMPUS,
-    GOLD,
-  };
-
   class Room : public Tile
   {
   public:

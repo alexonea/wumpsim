@@ -25,6 +25,14 @@
 
 namespace wumpus
 {
+  enum RoomContent
+  {
+    EMPTY = 0,
+    PIT,
+    WUMPUS,
+    GOLD,
+  };
+
   class Room;
   using RoomPtr = std::shared_ptr<Room>;
 }
