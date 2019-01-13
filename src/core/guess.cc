@@ -1,5 +1,5 @@
 /*
- *  autopilot.h
+ *  guess.cc
  *
  *  Copyright (C) 2019 Alexandru N. Onea <alexandru.onea@toporcomputing.com>
  *
@@ -18,28 +18,45 @@
  *
  */
 
-#ifndef SRC_CORE_AUTOPILOT_H
-#define SRC_CORE_AUTOPILOT_H 1
-
-#include <memory>
-
-#include <core/agent.h>
-#include <core/path_decl.h>
+#include <core/guess.h>
 
 namespace wumpus
 {
-  class AutoPilot : public Agent
+  Guess::Guess() noexcept
+  : m_bWumpus{true}
+  , m_bPit{true}
+  {}
+
+  void
+  Guess::markSafe() noexcept
   {
-  public:
-    AutoPilot();
-    virtual ~AutoPilot() = default;
-  private:
-    virtual Action doNext(const Percept& sensors) override;
+    m_bPit = false;
+    m_bWumpus = false;
+  }
 
-    void markSafe(const PathPtr& pCurrent, const PathContent& eContent = OK);
+  void
+  Guess::clear(const PathContent& eContent) noexcept
+  {
+    switch (eContent)
+    {
+      case WUMPUS:
+      {
+        m_bWumpus = false;
+        break;
+      }
+      case PIT:
+      {
+        m_bPit = false;
+        break;
+      }
+      default:
+        return;
+    }
+  }
 
-    PathPtr m_pCurrent;
-  };
+  bool
+  Guess::isSafe() const noexcept
+  {
+    return (m_bWumpus == false && m_bPit == false);
+  }
 }
-
-#endif

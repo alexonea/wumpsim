@@ -20,11 +20,71 @@
 
 #include <core/autopilot.h>
 
+#include <core/path.h>
+#include <core/error.h>
+
 namespace wumpus
 {
+  AutoPilot::AutoPilot()
+  : m_pCurrent{new Path{}}
+  {
+    m_pCurrent->getGuess().markSafe();
+  }
+
   Action
   AutoPilot::doNext(const Percept& sensors)
   {
-    return FORWARD;
+    if (m_pCurrent->getGuess().isSafe())
+    {
+      markSafe(m_pCurrent);
+    }
+    else
+    {
+      if (!sensors.isActive(BREEZE))
+        markSafe(m_pCurrent, PIT);
+
+      if (!sensors.isActive(STENCH))
+        markSafe(m_pCurrent, WUMPUS);
+    }
+
+    return CLIMB;
+  }
+
+  void
+  AutoPilot::markSafe(const PathPtr& pCurrent, const PathContent& eContent)
+  {
+    PathPtr pLeft   = std::static_pointer_cast<Path>(pCurrent->getLeft());
+    PathPtr pRight  = std::static_pointer_cast<Path>(pCurrent->getRight());
+    PathPtr pUp     = std::static_pointer_cast<Path>(pCurrent->getUp());
+    PathPtr pDown   = std::static_pointer_cast<Path>(pCurrent->getDown());
+
+    if (eContent == OK)
+    {
+      if (pLeft)
+        pLeft->getGuess().markSafe();
+
+      if (pRight)
+        pRight->getGuess().markSafe();
+
+      if (pUp)
+        pUp->getGuess().markSafe();
+
+      if (pDown)
+        pDown->getGuess().markSafe();
+    }
+    else
+    {
+      if (pLeft)
+        pLeft->getGuess().clear(eContent);
+
+      if (pRight)
+        pRight->getGuess().clear(eContent);
+
+      if (pUp)
+        pUp->getGuess().clear(eContent);
+
+      if (pDown)
+        pDown->getGuess().clear(eContent);
+    }
   }
 }

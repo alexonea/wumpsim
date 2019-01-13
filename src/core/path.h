@@ -28,15 +28,12 @@
 
 namespace wumpus
 {
-  using Guess = SensorData<PathContent>;
-
   class Path : public Tile
   {
   public:
-    Path(const PathContent& eGuess = UNKNOWN) noexcept;
+    Path() = default;
 
-    Guess  getGuess() const noexcept;
-    void   setGuess(const Guess& eGuess);
+    Guess& getGuess() noexcept;
   private:
     Guess m_eGuess;
   };

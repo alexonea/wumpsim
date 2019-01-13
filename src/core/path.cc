@@ -22,19 +22,9 @@
 
 namespace wumpus
 {
-  Path::Path(const PathContent& eGuess) noexcept
-  : m_eGuess{eGuess}
-  {}
-
-  Guess
-  Path::getGuess() const noexcept
+  Guess&
+  Path::getGuess() noexcept
   {
     return m_eGuess;
-  }
-
-  void
-  Path::setGuess(const Guess& eGuess)
-  {
-    m_eGuess = eGuess;
   }
 }

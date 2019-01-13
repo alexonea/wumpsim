@@ -23,20 +23,10 @@
 
 #include <memory>
 
-#include <core/sensor.h>
+#include <core/guess.h>
 
 namespace wumpus
 {
-  enum PathContent
-  {
-    UNKNOWN = 0,
-    OK,
-    PIT,
-    WUMPUS,
-  };
-
-  using Guess = SensorData<PathContent>;
-
   class Path;
   using PathPtr = std::shared_ptr<Path>;
 }

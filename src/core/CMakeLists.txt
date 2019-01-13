@@ -8,6 +8,7 @@ set(SOURCES
   agent.cc
   autopilot.cc
   path.cc
+  guess.cc
 )
 
 add_library(wumpcore ${SOURCES})
