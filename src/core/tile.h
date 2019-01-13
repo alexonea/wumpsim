@@ -31,10 +31,20 @@ namespace wumpus
     Tile() = default;
     virtual ~Tile() = default;
 
-    void resetUp    (const TilePtr& pTile);
-    void resetDown  (const TilePtr& pTile);
-    void resetLeft  (const TilePtr& pTile);
-    void resetRight (const TilePtr& pTile);
+    void resetUp      (const TilePtr& pTile);
+    void resetDown    (const TilePtr& pTile);
+    void resetLeft    (const TilePtr& pTile);
+    void resetRight   (const TilePtr& pTile);
+
+    TilePtr  getUp    () const;
+    TilePtr  getDown  () const;
+    TilePtr  getLeft  () const;
+    TilePtr  getRight () const;
+
+    TilePtr& getUp    () noexcept;
+    TilePtr& getDown  () noexcept;
+    TilePtr& getLeft  () noexcept;
+    TilePtr& getRight () noexcept;
   private:
     /*
      * Each tile holds 4 pointers to the neighbouring tiles. This allows for

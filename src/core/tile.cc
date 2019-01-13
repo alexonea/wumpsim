@@ -45,4 +45,52 @@ namespace wumpus
   {
     m_pRight = pTile;
   }
+
+  TilePtr
+  Tile::getUp() const
+  {
+    return m_pUp;
+  }
+
+  TilePtr
+  Tile::getDown() const
+  {
+    return m_pDown;
+  }
+
+  TilePtr
+  Tile::getLeft() const
+  {
+    return m_pLeft;
+  }
+
+  TilePtr
+  Tile::getRight() const
+  {
+    return m_pRight;
+  }
+
+  TilePtr&
+  Tile::getUp() noexcept
+  {
+    return m_pUp;
+  }
+
+  TilePtr&
+  Tile::getDown() noexcept
+  {
+    return m_pDown;
+  }
+
+  TilePtr&
+  Tile::getLeft() noexcept
+  {
+    return m_pLeft;
+  }
+
+  TilePtr&
+  Tile::getRight() noexcept
+  {
+    return m_pRight;
+  }
 }
