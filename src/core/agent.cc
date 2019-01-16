@@ -20,11 +20,27 @@
 
 #include <core/agent.h>
 
+#include <core/path.h>
+
+#include <iostream>
+
 namespace wumpus
 {
+  Agent::Agent()
+  : m_pCurrent{new Path{{0, 0}}}
+  {}
+
   Action
-  Agent::next(const Percept& sensors)
+  Agent::next(const Percept& sensors, PlayerOrientation eOrientation)
   {
-    return doNext(sensors);
+    Action a = doNext(sensors, eOrientation);
+
+    return a;
+  }
+
+  void
+  Agent::afterUpdate(const AgentCallback& cb)
+  {
+    m_cb = cb;
   }
 }

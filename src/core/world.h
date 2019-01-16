@@ -35,7 +35,10 @@ namespace wumpus
   public:
     World(unsigned nRows, unsigned nCols);
 
-    void setPlayer(PlayerPtr&& pPlayer, unsigned iX = 1, unsigned iY = 1);
+    void setPlayer  (PlayerPtr&& pPlayer, unsigned iX = 0, unsigned iY = 0);
+    void setRoomType(const RoomContent& eContent, unsigned iX, unsigned iY);
+
+    bool update     ();
   private:
     unsigned             m_nRows;
     unsigned             m_nCols;

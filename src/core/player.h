@@ -22,6 +22,7 @@
 #define SRC_CORE_PLAYER_H 1
 
 #include <core/player_decl.h>
+#include <core/agent.h>
 
 namespace wumpus
 {
@@ -31,11 +32,17 @@ namespace wumpus
     Player(PlayerOrientation eOrientation, unsigned nArrows = 1) noexcept;
     Player(unsigned nArrows = 1) noexcept;
 
-    void updateSensors(const Percept& sensors) noexcept;
+    void    updateSensors(const Percept& sensors) noexcept;
+
+    void    setAgent(AgentPtr&& pAgent);
+    Action  nextAction();
+
+    PlayerOrientation getOrientation() const noexcept;
   private:
     unsigned          m_nArrows;
     Percept           m_sensors;
     PlayerOrientation m_eOrientation;
+    AgentPtr          m_pAgent;
   };
 }
 

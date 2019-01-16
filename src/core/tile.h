@@ -36,16 +36,26 @@ namespace wumpus
     void resetLeft    (const TilePtr& pTile);
     void resetRight   (const TilePtr& pTile);
 
+    void resetUp      (Tile* pTile);
+    void resetDown    (Tile* pTile);
+    void resetLeft    (Tile* pTile);
+    void resetRight   (Tile* pTile);
+
     TilePtr  getUp    () const;
     TilePtr  getDown  () const;
     TilePtr  getLeft  () const;
     TilePtr  getRight () const;
 
+    Tile*  getUpRaw () const;
+    Tile*  getDownRaw() const;
+    Tile*  getLeftRaw() const;
+    Tile*  getRightRaw() const;
+
     TilePtr& getUp    () noexcept;
     TilePtr& getDown  () noexcept;
     TilePtr& getLeft  () noexcept;
     TilePtr& getRight () noexcept;
-  private:
+  protected:
     /*
      * Each tile holds 4 pointers to the neighbouring tiles. This allows for
      * two "realistic" effects: 1) each player (if more than one) can act

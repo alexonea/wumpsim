@@ -22,6 +22,11 @@
 #define SRC_AGENT_H 1
 
 #include <core/player_decl.h>
+#include <core/path_decl.h>
+
+#include <memory>
+#include <map>
+#include <functional>
 
 namespace wumpus
 {
@@ -35,14 +40,26 @@ namespace wumpus
     CLIMB,
   };
 
+  using AgentCallback = std::function<void(const PathPtr&, PlayerOrientation)>;
+
   class Agent
   {
   public:
-    virtual ~Agent();
-    Action next(const Percept& sensors);
+    Agent();
+    virtual ~Agent() = default;
+
+    Action next(const Percept& sensors, PlayerOrientation eOrientation);
+    void   afterUpdate(const AgentCallback& cb);
   private:
-    virtual Action doNext(const Percept& sensors) = 0;
+    virtual Action doNext(const Percept& sensors, PlayerOrientation eOrientation) = 0;
+
+  protected:
+    AgentCallback m_cb;
+    PathPtr m_pCurrent;
+    std::map<Position, PathPtr> m_map;
   };
+
+  using AgentPtr = std::unique_ptr<Agent>;
 }
 
 #endif

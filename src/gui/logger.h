@@ -1,5 +1,5 @@
 /*
- *  player.cc
+ *  logger.h
  *
  *  Copyright (C) 2019 Alexandru N. Onea <alexandru.onea@toporcomputing.com>
  *
@@ -18,44 +18,35 @@
  *
  */
 
-#include <core/player.h>
+#ifndef SRC_GUI_LOGGER_H
+#define SRC_GUI_LOGGER_H 1
+
+#include <gui/window.h>
+#include <sstream>
+
+#include <string>
 
 namespace wumpus
 {
-  Player::Player(PlayerOrientation eOrientation, unsigned nArrows) noexcept
-  : m_eOrientation{eOrientation}
-  , m_nArrows{nArrows}
-  {}
-
-  Player::Player(unsigned nArrows) noexcept
-  : m_eOrientation{RIGHT}
-  , m_nArrows{nArrows}
-  {}
-
-  void
-  Player::updateSensors(const Percept& sensors) noexcept
+  class Logger : public Window, public std::stringstream
   {
-    m_sensors = sensors;
-  }
+  public:
+    virtual ~Logger();
 
-  void
-  Player::setAgent(AgentPtr&& pAgent)
-  {
-    m_pAgent = std::move(pAgent);
-  }
+    Logger(const Logger& other) = delete;
+    Logger& operator=(const Logger& other) = delete;
 
-  Action
-  Player::nextAction()
-  {
-    if (m_pAgent)
-      return m_pAgent->next(m_sensors, m_eOrientation);
+    Logger(Logger&& other) = default;
+    Logger& operator=(Logger&& other) = default;
 
-    return CLIMB;
-  }
+    virtual void refresh() const;
 
-  PlayerOrientation
-  Player::getOrientation() const noexcept
-  {
-    return m_eOrientation;
-  }
+    void log(const char *format, ...);
+
+    static Logger& getInstance();
+  private:
+    Logger(unsigned height);
+  };
 }
+
+#endif

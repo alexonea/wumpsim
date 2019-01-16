@@ -24,6 +24,8 @@
 #include <core/room.h>
 #include <core/player.h>
 
+#include <gui/logger.h>
+
 namespace wumpus
 {
   World::World(unsigned nRows, unsigned nCols)
@@ -49,17 +51,36 @@ namespace wumpus
 
       auto & pTile = m_vpTiles[p];
 
+      if (p == 0)
+      Logger::getInstance().log("now at index %d\n", p);
+
       if (isValid(up))
+      {
+        if (p == 0)
+        Logger::getInstance().log("    creating up\n");
         pTile->resetUp(m_vpTiles[up]);
+      }
 
       if (isValid(down))
+      {
+        if (p == 0)
+        Logger::getInstance().log("    creating down\n");
         pTile->resetDown(m_vpTiles[down]);
+      }
 
       if (isValid(left))
+      {
+        if (p == 0)
+        Logger::getInstance().log("    creating left\n");
         pTile->resetDown(m_vpTiles[left]);
+      }
 
       if (isValid(right))
+      {
+        if (p == 0)
+        Logger::getInstance().log("    creating right\n");
         pTile->resetDown(m_vpTiles[right]);
+      }
     }
   }
 
@@ -117,6 +138,29 @@ namespace wumpus
     if (!isValid(iX, iY))
       throw Error();
 
+    Logger::getInstance().log("setting player on pos %d\n", toPosIndex(iX, iY));
+
     m_vpTiles[toPosIndex(iX, iY)]->setPlayer(std::move(pPlayer));
+  }
+
+  void
+  World::setRoomType(const RoomContent& eContent, unsigned iX, unsigned iY)
+  {
+    if (!isValid(iX, iY))
+      throw Error();
+
+    m_vpTiles[toPosIndex(iX, iY)]->setContent(eContent);
+  }
+
+  bool
+  World::update()
+  {
+    for (auto& pTile : m_vpTiles)
+    {
+      if (pTile->hasPlayer())
+        return pTile->update();
+    }
+
+    return false;
   }
 }

@@ -22,9 +22,50 @@
 
 namespace wumpus
 {
+  Path::Path(const Position& pos)
+  : m_relativePos{pos}
+  {}
+
   Guess&
   Path::getGuess() noexcept
   {
     return m_eGuess;
+  }
+
+  Position
+  Path::getRelativePos() const noexcept
+  {
+    return m_relativePos;
+  }
+
+  Position
+  getRelative(const Position& current, PlayerOrientation eOrientation)
+  {
+    Position p = current;
+    switch (eOrientation)
+    {
+      case UP:
+      {
+        p.second++;
+        break;   
+      }
+      case DOWN:
+      {
+        p.second--;
+        break;
+      }
+      case LEFT:
+      {
+        p.first--;
+        break;
+      }
+      case RIGHT:
+      {
+        p.first++;
+        break;
+      }
+    }
+
+    return p;
   }
 }

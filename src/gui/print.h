@@ -1,5 +1,5 @@
 /*
- *  player.cc
+ *  print.h
  *
  *  Copyright (C) 2019 Alexandru N. Onea <alexandru.onea@toporcomputing.com>
  *
@@ -18,44 +18,15 @@
  *
  */
 
-#include <core/player.h>
+#ifndef SRC_GUI_PRINT_H
+#define SRC_GUI_PRINT_H 1
+
+#include <core/path_decl.h>
+#include <core/player_decl.h>
 
 namespace wumpus
 {
-  Player::Player(PlayerOrientation eOrientation, unsigned nArrows) noexcept
-  : m_eOrientation{eOrientation}
-  , m_nArrows{nArrows}
-  {}
-
-  Player::Player(unsigned nArrows) noexcept
-  : m_eOrientation{RIGHT}
-  , m_nArrows{nArrows}
-  {}
-
-  void
-  Player::updateSensors(const Percept& sensors) noexcept
-  {
-    m_sensors = sensors;
-  }
-
-  void
-  Player::setAgent(AgentPtr&& pAgent)
-  {
-    m_pAgent = std::move(pAgent);
-  }
-
-  Action
-  Player::nextAction()
-  {
-    if (m_pAgent)
-      return m_pAgent->next(m_sensors, m_eOrientation);
-
-    return CLIMB;
-  }
-
-  PlayerOrientation
-  Player::getOrientation() const noexcept
-  {
-    return m_eOrientation;
-  }
+  extern void print(const PathPtr& pCurrent, PlayerOrientation eOrientation);
 }
+
+#endif

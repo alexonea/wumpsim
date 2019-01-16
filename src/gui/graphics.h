@@ -1,5 +1,5 @@
 /*
- *  player.cc
+ *  graphics.h
  *
  *  Copyright (C) 2019 Alexandru N. Onea <alexandru.onea@toporcomputing.com>
  *
@@ -18,44 +18,26 @@
  *
  */
 
-#include <core/player.h>
+#ifndef SRC_GUI_GRAPHICS_H
+#define SRC_GUI_GRAPHICS_H 1
 
 namespace wumpus
 {
-  Player::Player(PlayerOrientation eOrientation, unsigned nArrows) noexcept
-  : m_eOrientation{eOrientation}
-  , m_nArrows{nArrows}
-  {}
-
-  Player::Player(unsigned nArrows) noexcept
-  : m_eOrientation{RIGHT}
-  , m_nArrows{nArrows}
-  {}
-
-  void
-  Player::updateSensors(const Percept& sensors) noexcept
+  class Window;
+  class Graphics
   {
-    m_sensors = sensors;
-  }
+  public:
+    virtual ~Graphics();
 
-  void
-  Player::setAgent(AgentPtr&& pAgent)
-  {
-    m_pAgent = std::move(pAgent);
-  }
+    void     waitForKey(int keyCode = 10);
+    unsigned waitNextKey();
 
-  Action
-  Player::nextAction()
-  {
-    if (m_pAgent)
-      return m_pAgent->next(m_sensors, m_eOrientation);
-
-    return CLIMB;
-  }
-
-  PlayerOrientation
-  Player::getOrientation() const noexcept
-  {
-    return m_eOrientation;
-  }
+    static Graphics& getInstance();
+  private:
+    Graphics();
+    Graphics(const Graphics& other) = delete;
+    Graphics& operator=(const Graphics& other) = delete;
+  };
 }
+
+#endif

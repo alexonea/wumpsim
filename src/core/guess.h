@@ -21,13 +21,15 @@
 #ifndef SRC_CORE_GUESS_H
 #define SRC_CORE_GUESS_H 1
 
+#include <string>
+
 namespace wumpus
 {
   enum PathContent
   {
     OK = 0,
-    PIT,
-    WUMPUS,
+    PC_PIT,
+    PC_WUMPUS,
   };
 
   class Guess
@@ -35,13 +37,19 @@ namespace wumpus
   public:
     Guess() noexcept;
 
-    void markSafe  () noexcept;
-    void clear     (const PathContent& eContent) noexcept;
+    void markSafe     () noexcept;
+    void clear        (const PathContent& eContent) noexcept;
 
-    bool isSafe    () const noexcept;
+    bool isSafe       () const noexcept;
+
+    void markPermanent() noexcept;
+    bool isPermanent  () const noexcept;
+
+    std::string toString() const;
   private:
     bool m_bWumpus;
     bool m_bPit;
+    bool m_bPermanent;
   };
 }
 

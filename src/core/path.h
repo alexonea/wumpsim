@@ -22,6 +22,9 @@
 #define SRC_CORE_PATH_H 1
 
 #include <core/path_decl.h>
+#include <core/player_decl.h>
+
+#include <utility>
 
 #include <core/sensor.h>
 #include <core/tile.h>
@@ -31,12 +34,16 @@ namespace wumpus
   class Path : public Tile
   {
   public:
-    Path() = default;
+    Path(const Position& pos);
 
-    Guess& getGuess() noexcept;
+    Guess&    getGuess() noexcept;
+    Position  getRelativePos() const noexcept;
   private:
-    Guess m_eGuess;
+    Guess     m_eGuess;
+    Position  m_relativePos;
   };
+
+  Position getRelative(const Position& current, PlayerOrientation eOrientation);
 }
 
 #endif

@@ -46,6 +46,30 @@ namespace wumpus
     m_pRight = pTile;
   }
 
+  void
+  Tile::resetUp(Tile* pTile)
+  {
+    m_pUp.reset(pTile);
+  }
+
+  void
+  Tile::resetDown(Tile* pTile)
+  {
+    m_pDown.reset(pTile);
+  }
+
+  void
+  Tile::resetLeft(Tile* pTile)
+  {
+    m_pLeft.reset(pTile);
+  }
+
+  void
+  Tile::resetRight(Tile* pTile)
+  {
+    m_pRight.reset(pTile);
+  }
+
   TilePtr
   Tile::getUp() const
   {
@@ -92,5 +116,29 @@ namespace wumpus
   Tile::getRight() noexcept
   {
     return m_pRight;
+  }
+
+  Tile*
+  Tile::getUpRaw () const
+  {
+    return m_pUp.get();
+  }
+
+  Tile*
+  Tile::getDownRaw() const
+  {
+    return m_pDown.get();
+  }
+
+  Tile*
+  Tile::getLeftRaw() const
+  {
+    return m_pLeft.get();
+  }
+
+  Tile*
+  Tile::getRightRaw() const
+  {
+    return m_pRight.get();
   }
 }

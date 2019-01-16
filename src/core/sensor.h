@@ -30,25 +30,23 @@ namespace wumpus
   {
     BREEZE = 0,
     STENCH,
-    GLTTER,
+    GLITTER,
     ROAR,
     BUMP,
   };
 
-  template <typename T>
   struct SensorData
   {
-    typedef typename std::underlying_type<T>::type TType;
-    static_assert(std::is_enum<T>::value, "SensorData needs enumeration type");
+    typedef typename std::underlying_type<Sensor>::type TType;
     TType data;
 
     SensorData(const TType& value = 0) : data{value} {};
-    SensorData(const T& value) : data{value} {};
+    SensorData(const Sensor& value) : data{value} {};
 
-    T&    set       (T sensor) noexcept;
-    T&    clear     (T sensor) noexcept;
-    bool  isActive  (T sensor) const noexcept;
-    bool  isZero    ()         const noexcept;
+    SensorData& set       (Sensor sensor) noexcept;
+    SensorData& clear     (Sensor sensor) noexcept;
+    bool        isActive  (Sensor sensor) const noexcept;
+    bool        isZero    ()              const noexcept;
   };
 }
 

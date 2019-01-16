@@ -35,7 +35,13 @@ namespace wumpus
 
     void        setPlayer     (PlayerPtr&& pPlayer);
     PlayerPtr&& releasePlayer ();
+    bool        hasPlayer     ();
+
+    void        setContent    (const RoomContent& eContent) noexcept;
+    bool        update        ();
   private:
+    void        applySensors  ();
+
     RoomContent m_eContent;
     /*
      * Each room holds a pointer to a player. This guarantees that only one

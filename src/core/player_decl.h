@@ -35,7 +35,7 @@ namespace wumpus
     RIGHT,
   };
 
-  using Percept = SensorData<Sensor>;
+  using Percept = SensorData;
 
   class Player;
   using PlayerPtr = std::unique_ptr<Player>;

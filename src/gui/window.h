@@ -1,5 +1,5 @@
 /*
- *  player.cc
+ *  window.h
  *
  *  Copyright (C) 2019 Alexandru N. Onea <alexandru.onea@toporcomputing.com>
  *
@@ -18,44 +18,34 @@
  *
  */
 
-#include <core/player.h>
+#ifndef SRC_GUI_WINDOW_H
+#define SRC_GUI_WINDOW_H 1
+
+#include <ncurses.h>
 
 namespace wumpus
 {
-  Player::Player(PlayerOrientation eOrientation, unsigned nArrows) noexcept
-  : m_eOrientation{eOrientation}
-  , m_nArrows{nArrows}
-  {}
-
-  Player::Player(unsigned nArrows) noexcept
-  : m_eOrientation{RIGHT}
-  , m_nArrows{nArrows}
-  {}
-
-  void
-  Player::updateSensors(const Percept& sensors) noexcept
+  class Window
   {
-    m_sensors = sensors;
-  }
+  public:
+    Window(unsigned x, unsigned y, unsigned w, unsigned h);
+    Window(WINDOW* pWindow);
 
-  void
-  Player::setAgent(AgentPtr&& pAgent)
-  {
-    m_pAgent = std::move(pAgent);
-  }
+    Window(const Window& other) = delete;
+    Window& operator=(const Window& other) = delete;
 
-  Action
-  Player::nextAction()
-  {
-    if (m_pAgent)
-      return m_pAgent->next(m_sensors, m_eOrientation);
+    Window(Window&& other);
+    Window& operator=(Window&& other);
+    
+    virtual ~Window();
 
-    return CLIMB;
-  }
-
-  PlayerOrientation
-  Player::getOrientation() const noexcept
-  {
-    return m_eOrientation;
-  }
+    virtual void refresh() const;
+  protected:
+    WINDOW* m_pWindow;
+    unsigned m_nHeight;
+  private:
+    bool    m_bManaged;
+  };
 }
+
+#endif

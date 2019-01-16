@@ -1,5 +1,5 @@
 /*
- *  player.cc
+ *  graphics.cc
  *
  *  Copyright (C) 2019 Alexandru N. Onea <alexandru.onea@toporcomputing.com>
  *
@@ -18,44 +18,49 @@
  *
  */
 
-#include <core/player.h>
+#include <gui/graphics.h>
+
+#include <ncurses.h>
 
 namespace wumpus
 {
-  Player::Player(PlayerOrientation eOrientation, unsigned nArrows) noexcept
-  : m_eOrientation{eOrientation}
-  , m_nArrows{nArrows}
-  {}
-
-  Player::Player(unsigned nArrows) noexcept
-  : m_eOrientation{RIGHT}
-  , m_nArrows{nArrows}
-  {}
-
-  void
-  Player::updateSensors(const Percept& sensors) noexcept
+  Graphics::Graphics()
   {
-    m_sensors = sensors;
+    initscr();
+
+    if (has_colors() == TRUE)
+      start_color();
+
+    keypad(stdscr, TRUE);
+    noecho();
+    curs_set(0);
+    refresh();
+  }
+
+  Graphics::~Graphics()
+  {
+    endwin();
+  }
+
+  Graphics&
+  Graphics::getInstance()
+  {
+    static Graphics s_instance;
+    return s_instance;
   }
 
   void
-  Player::setAgent(AgentPtr&& pAgent)
+  Graphics::waitForKey(int keyCode)
   {
-    m_pAgent = std::move(pAgent);
+    while (getch() != keyCode);
   }
 
-  Action
-  Player::nextAction()
+  unsigned
+  Graphics::waitNextKey()
   {
-    if (m_pAgent)
-      return m_pAgent->next(m_sensors, m_eOrientation);
+    unsigned key;
+    while ((key = getch()) == ERR);
 
-    return CLIMB;
-  }
-
-  PlayerOrientation
-  Player::getOrientation() const noexcept
-  {
-    return m_eOrientation;
+    return key;
   }
 }

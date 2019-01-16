@@ -22,32 +22,28 @@
 
 namespace wumpus
 {
-  template <typename T>
-  T&
-  SensorData<T>::set(T sensor) noexcept
+  SensorData&
+  SensorData::set(Sensor sensor) noexcept
   {
     data |= (1 << sensor);
     return *this;
   }
 
-  template <typename T>
-  T&
-  SensorData<T>::clear(T sensor) noexcept
+  SensorData&
+  SensorData::clear(Sensor sensor) noexcept
   {
     data &= ~(1 << sensor);
     return *this;
   }
 
-  template <typename T>
   bool
-  SensorData<T>::isActive(T sensor) const noexcept
+  SensorData::isActive(Sensor sensor) const noexcept
   {
     return (data & (1 << sensor));
   }
 
-  template <typename T>
   bool
-  SensorData<T>::isZero() const noexcept
+  SensorData::isZero() const noexcept
   {
     return (data == 0);
   }

@@ -1,5 +1,5 @@
 /*
- *  player.cc
+ *  box.h
  *
  *  Copyright (C) 2019 Alexandru N. Onea <alexandru.onea@toporcomputing.com>
  *
@@ -18,44 +18,37 @@
  *
  */
 
-#include <core/player.h>
+#ifndef SRC_GUI_BOX_H
+#define SRC_GUI_BOX_H 1
+
+#include <core/guess.h>
+#include <gui/window.h>
+
+#include <memory>
 
 namespace wumpus
 {
-  Player::Player(PlayerOrientation eOrientation, unsigned nArrows) noexcept
-  : m_eOrientation{eOrientation}
-  , m_nArrows{nArrows}
-  {}
-
-  Player::Player(unsigned nArrows) noexcept
-  : m_eOrientation{RIGHT}
-  , m_nArrows{nArrows}
-  {}
-
-  void
-  Player::updateSensors(const Percept& sensors) noexcept
+  class Box : public Window
   {
-    m_sensors = sensors;
-  }
+  public:
+    Box(unsigned x, unsigned y, unsigned w = 11, unsigned h = 7);
+    virtual ~Box();
 
-  void
-  Player::setAgent(AgentPtr&& pAgent)
-  {
-    m_pAgent = std::move(pAgent);
-  }
+    Box(Box&& other) = default;
+    Box& operator=(Box&& other) = default;
 
-  Action
-  Player::nextAction()
-  {
-    if (m_pAgent)
-      return m_pAgent->next(m_sensors, m_eOrientation);
+    virtual void refresh() const;
 
-    return CLIMB;
-  }
+    void setGuess(const Guess& guess);
+    void setPlayer(unsigned player);
+  private:
+    unsigned  m_player;
+    Guess     m_guess;
+    unsigned  m_nWidth;
+    unsigned  m_nHeight;
+  };
 
-  PlayerOrientation
-  Player::getOrientation() const noexcept
-  {
-    return m_eOrientation;
-  }
+  using BoxPtr = std::shared_ptr<Box>;
 }
+
+#endif

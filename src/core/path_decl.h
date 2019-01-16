@@ -27,6 +27,8 @@
 
 namespace wumpus
 {
+  using Position = std::pair<int, int>;
+
   class Path;
   using PathPtr = std::shared_ptr<Path>;
 }

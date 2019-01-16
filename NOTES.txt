@@ -1,0 +1,35 @@
+TILE - representation of a world unit
+  owns: relative coordinate to player start position
+        guess of content
+        references to surrounding tiles
+
+AGENT - takes decision for next move
+  input: player orientation and senses
+  output: action
+  owns: representation of the world (knowledge base)
+
+JUDGE - validates next move, implements game rules
+  input: action, player orientation and location, world stats
+  output: updated world stats and player senses
+  owns: world
+        player
+
+ROOM: world unit
+  owns: content type (wumpus, empty, pit, gold)
+
+WORLD - describes the world
+  owns: grid of rooms
+
+PLAYER - describes the player (current senses, current orientation)
+  owns: senses
+        orientation
+        agent instance
+
+==============================
+Workflow:
+
+1. draw player percept and knowledge
+2. choose action
+3. validate action
+4. apply action
+5. repeat from 1.

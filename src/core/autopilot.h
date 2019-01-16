@@ -23,8 +23,9 @@
 
 #include <memory>
 
+#include <core/player_decl.h>
+
 #include <core/agent.h>
-#include <core/path_decl.h>
 
 namespace wumpus
 {
@@ -34,11 +35,11 @@ namespace wumpus
     AutoPilot();
     virtual ~AutoPilot() = default;
   private:
-    virtual Action doNext(const Percept& sensors) override;
+    virtual Action doNext(const Percept& sensors, PlayerOrientation eOrientation) override;
 
     void markSafe(const PathPtr& pCurrent, const PathContent& eContent = OK);
-
-    PathPtr m_pCurrent;
+    void linkNeighbours(PathPtr pCenter);
+    ;
   };
 }
 
