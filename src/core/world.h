@@ -21,36 +21,22 @@
 #ifndef SRC_CORE_WORLD_H
 #define SRC_CORE_WORLD_H 1
 
-#include <vector>
-
 #include <core/room_decl.h>
-#include <core/player_decl.h>
+
+#include <vector>
 
 namespace wumpus
 {
-  using PosIndex = long long;
-
   class World
   {
   public:
     World(unsigned nRows, unsigned nCols);
 
-    void setPlayer  (PlayerPtr&& pPlayer, unsigned iX = 0, unsigned iY = 0);
     void setRoomType(const RoomContent& eContent, unsigned iX, unsigned iY);
-
-    bool update     ();
   private:
     unsigned             m_nRows;
     unsigned             m_nCols;
-    std::vector<RoomPtr> m_vpTiles;
-
-    PosIndex nextUp     (PosIndex current) const noexcept;
-    PosIndex nextDown   (PosIndex current) const noexcept;
-    PosIndex nextLeft   (PosIndex current) const noexcept;
-    PosIndex nextRight  (PosIndex current) const noexcept;
-    PosIndex toPosIndex (unsigned iX, unsigned iY) const noexcept;
-    bool     isValid    (unsigned iX, unsigned iY) const noexcept;
-    bool     isValid    (PosIndex current) const noexcept;
+    std::vector<Room>    m_vRooms;
   };
 }
 

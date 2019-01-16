@@ -25,27 +25,28 @@
 
 namespace wumpus
 {
-  enum PathContent
+  enum Guess
   {
     OK = 0,
-    PC_PIT,
-    PC_WUMPUS,
+    GUESS_PIT,
+    GUESS_WUMPUS
   };
 
-  class Guess
+  class GuessData
   {
   public:
-    Guess() noexcept;
+    GuessData() noexcept;
+    virtual ~GuessData() = default;
+
+    void clear        (const Guess& eContent) noexcept;
 
     void markSafe     () noexcept;
-    void clear        (const PathContent& eContent) noexcept;
-
     bool isSafe       () const noexcept;
 
     void markPermanent() noexcept;
     bool isPermanent  () const noexcept;
 
-    std::string toString() const;
+    // std::string toString() const;
   private:
     bool m_bWumpus;
     bool m_bPit;

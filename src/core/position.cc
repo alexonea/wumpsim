@@ -1,5 +1,5 @@
 /*
- *  tile.cc
+ *  position.cc
  *
  *  Copyright (C) 2019 Alexandru N. Onea <alexandru.onea@toporcomputing.com>
  *
@@ -18,71 +18,51 @@
  *
  */
 
-#include <core/tile.h>
+#include <core/position.h>
 
 namespace wumpus
 {
-  Tile::Tile(Position relPosition)
-  : m_relPosition{relPosition}
+  Position::Position(const std::pair<int, int>& pos)
+  : m_pos{pos}
   {}
 
-  TileRef
-  Tile::resetUp(const TileRef& pTile)
+  Position::Position(int iX, int iY)
+  : Position{{iX, iY}}
+  {}
+
+  bool
+  operator<(const Position& first, const Position& second)
   {
-    return (m_pUp = pTile);
+    return (first.m_pos < second.m_pos);
   }
 
-  TileRef
-  Tile::resetDown(const TileRef& pTile)
+  bool
+  operator==(const Position& first, const Position& second)
   {
-    return (m_pDown = pTile);
-  }
-
-  TileRef
-  Tile::resetLeft(const TileRef& pTile)
-  {
-    return (m_pLeft = pTile);
-  }
-
-  TileRef
-  Tile::resetRight(const TileRef& pTile)
-  {
-    return (m_pRight = pTile);
-  }
-
-  TileRef
-  Tile::getUp() const
-  {
-    return m_pUp;
-  }
-
-  TileRef
-  Tile::getDown() const
-  {
-    return m_pDown;
-  }
-
-  TileRef
-  Tile::getLeft() const
-  {
-    return m_pLeft;
-  }
-
-  TileRef
-  Tile::getRight() const
-  {
-    return m_pRight;
-  }
-
-  void
-  Tile::setPosition(const Position& relPosition)
-  {
-    m_relPosition = relPosition;
+    return (first.m_pos == second.m_pos);
   }
 
   Position
-  Tile::getPosition() const
+  up(const Position& current)
   {
-    return m_relPosition;
+    return Position(current.m_pos.first + 1, current.m_pos.second);
+  }
+  
+  Position
+  down(const Position& current)
+  {
+    return Position(current.m_pos.first - 1, current.m_pos.second);
+  }
+  
+  Position
+  left(const Position& current)
+  {
+    return Position(current.m_pos.first, current.m_pos.second - 1);
+  }
+  
+  Position
+  right(const Position& current)
+  {
+    return Position(current.m_pos.first, current.m_pos.second + 1);
   }
 }

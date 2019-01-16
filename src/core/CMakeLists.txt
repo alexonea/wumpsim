@@ -4,10 +4,8 @@ set(SOURCES
   world.cc
   sensor.cc
   player.cc
-  error.cc
+  position.cc
   agent.cc
-  autopilot.cc
-  path.cc
   guess.cc
 )
 

@@ -20,147 +20,23 @@
 
 #include <core/world.h>
 
-#include <core/error.h>
 #include <core/room.h>
-#include <core/player.h>
-
-#include <gui/logger.h>
 
 namespace wumpus
 {
   World::World(unsigned nRows, unsigned nCols)
   : m_nRows{nRows}
   , m_nCols{nCols}
-  {
-    unsigned long nTiles = nRows * nCols;
-    m_vpTiles.resize(nTiles);
-
-    PosIndex p = 0;
-    while (p < nTiles)
-      /*
-       * [10.01.2019] valgrind reports leaks of memory which is allocated here
-       */
-      m_vpTiles[p++].reset(new Room{});
-
-    for (p = 0; p < nTiles; ++p)
-    {
-      PosIndex up     = nextUp(p);
-      PosIndex down   = nextDown(p);
-      PosIndex left   = nextLeft(p);
-      PosIndex right  = nextRight(p);
-
-      auto & pTile = m_vpTiles[p];
-
-      if (p == 0)
-      Logger::getInstance().log("now at index %d\n", p);
-
-      if (isValid(up))
-      {
-        if (p == 0)
-        Logger::getInstance().log("    creating up\n");
-        pTile->resetUp(m_vpTiles[up]);
-      }
-
-      if (isValid(down))
-      {
-        if (p == 0)
-        Logger::getInstance().log("    creating down\n");
-        pTile->resetDown(m_vpTiles[down]);
-      }
-
-      if (isValid(left))
-      {
-        if (p == 0)
-        Logger::getInstance().log("    creating left\n");
-        pTile->resetDown(m_vpTiles[left]);
-      }
-
-      if (isValid(right))
-      {
-        if (p == 0)
-        Logger::getInstance().log("    creating right\n");
-        pTile->resetDown(m_vpTiles[right]);
-      }
-    }
-  }
-
-  PosIndex
-  World::nextUp(PosIndex current) const noexcept
-  {
-    current -= m_nCols;
-    return isValid(current) ? current : -1;
-  }
-
-  PosIndex
-  World::nextDown(PosIndex current) const noexcept
-  {
-    current += m_nCols;
-    return isValid(current) ? current : -1;
-  }
-
-  PosIndex
-  World::nextLeft(PosIndex current) const noexcept
-  {
-    return (current % m_nCols == 0 ||
-      !isValid(current - 1)) ? -1 : (current - 1);
-  }
-
-  PosIndex
-  World::nextRight(PosIndex current) const noexcept
-  {
-    current++;
-    return (current % m_nCols == 0 ||
-      !isValid(current)) ? -1 : current;
-  }
-
-  PosIndex
-  World::toPosIndex(unsigned iX, unsigned iY) const noexcept
-  {
-    PosIndex pos = iX * m_nCols + iY;
-    return (pos >= 0 && pos < (m_nCols * m_nRows)) ? pos : -1;
-  }
-
-  bool
-  World::isValid(unsigned iX, unsigned iY) const noexcept
-  {
-    return (iX < m_nRows && iY < m_nCols);
-  }
-
-  bool
-  World::isValid(PosIndex current) const noexcept
-  {
-    return (current >= 0 && current < (m_nCols * m_nRows));
-  }
-
-  void
-  World::setPlayer(PlayerPtr&& pPlayer, unsigned iX, unsigned iY)
-  {
-    if (!isValid(iX, iY))
-      throw Error();
-
-    Logger::getInstance().log("setting player on pos %d\n", toPosIndex(iX, iY));
-
-    m_vpTiles[toPosIndex(iX, iY)]->setPlayer(std::move(pPlayer));
-  }
+  , m_vRooms{nRows * nCols}
+  {}
 
   void
   World::setRoomType(const RoomContent& eContent, unsigned iX, unsigned iY)
   {
-    if (!isValid(iX, iY))
-      throw Error();
+    if (iX >= m_nRows || iY >= m_nCols)
+      return;
 
-    m_vpTiles[toPosIndex(iX, iY)]->setContent(eContent);
-  }
-
-  bool
-  World::update()
-  {
-    for (auto& pTile : m_vpTiles)
-    {
-      if (pTile->hasPlayer())
-        return pTile->update();
-    }
-
-    return false;
+    unsigned long p = iX * m_nRows + iY;
+    m_vRooms[p].setContent(eContent);
   }
 }

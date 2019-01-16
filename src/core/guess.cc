@@ -20,38 +20,30 @@
 
 #include <core/guess.h>
 
-#include <sstream>
+// #include <sstream>
 
 namespace wumpus
 {
-  Guess::Guess() noexcept
+  GuessData::GuessData() noexcept
   : m_bWumpus{true}
   , m_bPit{true}
   , m_bPermanent{false}
   {}
 
   void
-  Guess::markSafe() noexcept
-  {
-    m_bPit = false;
-    m_bWumpus = false;
-    m_bPermanent = true;
-  }
-
-  void
-  Guess::clear(const PathContent& eContent) noexcept
+  GuessData::clear(const Guess& eContent) noexcept
   {
     if (m_bPermanent)
       return;
 
     switch (eContent)
     {
-      case PC_WUMPUS:
+      case GUESS_WUMPUS:
       {
         m_bWumpus = false;
         break;
       }
-      case PC_PIT:
+      case GUESS_PIT:
       {
         m_bPit = false;
         break;
@@ -64,47 +56,55 @@ namespace wumpus
       m_bPermanent = true;
   }
 
+  void
+  GuessData::markSafe() noexcept
+  {
+    m_bPit = false;
+    m_bWumpus = false;
+    m_bPermanent = true;
+  }
+
   bool
-  Guess::isSafe() const noexcept
+  GuessData::isSafe() const noexcept
   {
     return (m_bWumpus == false && m_bPit == false);
   }
 
   void
-  Guess::markPermanent() noexcept
+  GuessData::markPermanent() noexcept
   {
     m_bPermanent = true;
   }
 
   bool
-  Guess::isPermanent() const noexcept
+  GuessData::isPermanent() const noexcept
   {
     return m_bPermanent;
   }
 
-  std::string
-  Guess::toString() const
-  {
-    std::stringstream ss;
+  // std::string
+  // GuessData::toString() const
+  // {
+  //   std::stringstream ss;
     
-    if (isPermanent())
-    {
-      if (isSafe())
-        ss << "OK";
-      else if (m_bPit)
-        ss << "PIT";
-      else
-        ss << "WUMPUS";
-    }
-    else
-    {
-      if (m_bPit)
-        ss << "P? ";
+  //   if (isPermanent())
+  //   {
+  //     if (isSafe())
+  //       ss << "OK";
+  //     else if (m_bPit)
+  //       ss << "PIT";
+  //     else
+  //       ss << "WUMPUS";
+  //   }
+  //   else
+  //   {
+  //     if (m_bPit)
+  //       ss << "P? ";
 
-      if (m_bWumpus)
-        ss << "W?";
-    }
+  //     if (m_bWumpus)
+  //       ss << "W?";
+  //   }
 
-    return ss.str();
-  }
+  //   return ss.str();
+  // }
 }

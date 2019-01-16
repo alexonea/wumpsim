@@ -22,27 +22,38 @@
 #define SRC_CORE_PLAYER_H 1
 
 #include <core/player_decl.h>
+#include <core/guess.h>
 #include <core/agent.h>
+
+#include <map>
 
 namespace wumpus
 {
-  class Player
+  class Player : public Agent
   {
   public:
-    Player(PlayerOrientation eOrientation, unsigned nArrows = 1) noexcept;
+    Player(Orientation eOrientation, unsigned nArrows = 1) noexcept;
     Player(unsigned nArrows = 1) noexcept;
 
-    void    updateSensors(const Percept& sensors) noexcept;
+    void        updateSensors (const Percept& sensors) noexcept;
 
-    void    setAgent(AgentPtr&& pAgent);
-    Action  nextAction();
+    Orientation getOrientation() const noexcept;
+    void        setOrientation(const Orientation& eOrientation) noexcept;
 
-    PlayerOrientation getOrientation() const noexcept;
+    unsigned    getArrows     () const noexcept;
+    void        setArrows     (unsigned nArrows) noexcept;
   private:
-    unsigned          m_nArrows;
-    Percept           m_sensors;
-    PlayerOrientation m_eOrientation;
-    AgentPtr          m_pAgent;
+    unsigned    m_nArrows;
+    Percept     m_sensors;
+    Orientation m_eOrientation;
+
+    virtual Action doNextAction() override;
+
+    std::map<Position, TileRef> m_vpTiles;
+    TileRef                     m_pCurrent;
+
+    void markSafeAround(const TileRef& pCurrent, const Guess& eGuess = OK);
+    void updateLinks   (const TileRef& pCurrent);
   };
 }
 

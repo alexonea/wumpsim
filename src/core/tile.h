@@ -23,51 +23,38 @@
  
 #include <core/tile_decl.h>
 
+#include <core/guess.h>
+
 namespace wumpus
 {
-  class Tile
+  class Tile : public GuessData
   {
   public:
-    Tile() = default;
-    virtual ~Tile() = default;
+    Tile(Position relPosition = {0, 0});
 
-    void resetUp      (const TilePtr& pTile);
-    void resetDown    (const TilePtr& pTile);
-    void resetLeft    (const TilePtr& pTile);
-    void resetRight   (const TilePtr& pTile);
+    TileRef   resetUp      (const TileRef& pTile);
+    TileRef   resetDown    (const TileRef& pTile);
+    TileRef   resetLeft    (const TileRef& pTile);
+    TileRef   resetRight   (const TileRef& pTile);
 
-    void resetUp      (Tile* pTile);
-    void resetDown    (Tile* pTile);
-    void resetLeft    (Tile* pTile);
-    void resetRight   (Tile* pTile);
+    TileRef   getUp    () const;
+    TileRef   getDown  () const;
+    TileRef   getLeft  () const;
+    TileRef   getRight () const;
 
-    TilePtr  getUp    () const;
-    TilePtr  getDown  () const;
-    TilePtr  getLeft  () const;
-    TilePtr  getRight () const;
-
-    Tile*  getUpRaw () const;
-    Tile*  getDownRaw() const;
-    Tile*  getLeftRaw() const;
-    Tile*  getRightRaw() const;
-
-    TilePtr& getUp    () noexcept;
-    TilePtr& getDown  () noexcept;
-    TilePtr& getLeft  () noexcept;
-    TilePtr& getRight () noexcept;
-  protected:
+    void      setPosition(const Position& relPosition);
+    Position  getPosition() const;
+  private:
     /*
-     * Each tile holds 4 pointers to the neighbouring tiles. This allows for
-     * two "realistic" effects: 1) each player (if more than one) can act
-     * independently and in parallel (with proper synchronization) and 2) the
-     * tiles can be configured in non-grid patterns and allow loops, shortcuts
-     * and more. Shared pointers are used because one tile is referenced by
-     * more than one neighbouring tile.
+     * Each tile holds 4 pointers to the neighbouring tiles.
      */
-    TilePtr m_pUp;
-    TilePtr m_pDown;
-    TilePtr m_pLeft;
-    TilePtr m_pRight;
+    TileRef   m_pUp;
+    TileRef   m_pDown;
+    TileRef   m_pLeft;
+    TileRef   m_pRight;
+
+    Guess     m_guess;
+    Position  m_relPosition;
   };
 }
 

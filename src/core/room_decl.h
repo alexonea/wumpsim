@@ -21,8 +21,6 @@
 #ifndef SRC_CORE_ROOM_DECL_H
 #define SRC_CORE_ROOM_DECL_H 1
 
-#include <memory>
-
 namespace wumpus
 {
   enum RoomContent
@@ -34,7 +32,6 @@ namespace wumpus
   };
 
   class Room;
-  using RoomPtr = std::shared_ptr<Room>;
 }
 
 #endif

@@ -1,5 +1,5 @@
 /*
- *  path.h
+ *  position.h
  *
  *  Copyright (C) 2019 Alexandru N. Onea <alexandru.onea@toporcomputing.com>
  *
@@ -18,32 +18,36 @@
  *
  */
 
-#ifndef SRC_CORE_PATH_H
-#define SRC_CORE_PATH_H 1
-
-#include <core/path_decl.h>
-#include <core/player_decl.h>
+#ifndef SRC_CORE_POSITION_H
+#define SRC_CORE_POSITION_H 1
 
 #include <utility>
 
-#include <core/sensor.h>
-#include <core/tile.h>
-
 namespace wumpus
 {
-  class Path : public Tile
+  class Position
   {
   public:
-    Path(const Position& pos);
-
-    Guess&    getGuess() noexcept;
-    Position  getRelativePos() const noexcept;
+    Position(int iX = 0, int iY = 0);
+    Position(const std::pair<int, int>& pos);
   private:
-    Guess     m_eGuess;
-    Position  m_relativePos;
+    std::pair<int, int> m_pos;
+
+    friend bool operator<(const Position& first, const Position& second);
+    friend bool operator==(const Position& first, const Position& second);
+
+    friend Position up(const Position& current);
+    friend Position down(const Position& current);
+    friend Position left(const Position& current);
+    friend Position right(const Position& current);
   };
 
-  Position getRelative(const Position& current, PlayerOrientation eOrientation);
+  extern bool operator<(const Position& first, const Position& second);
+
+  extern Position up(const Position& current);
+  extern Position down(const Position& current);
+  extern Position left(const Position& current);
+  extern Position right(const Position& current);
 }
 
 #endif

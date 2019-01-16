@@ -20,11 +20,10 @@
 
 #include <core/player.h>
 #include <core/world.h>
-#include <core/autopilot.h>
-#include <gui/graphics.h>
-#include <gui/box.h>
-#include <gui/logger.h>
-#include <gui/print.h>
+// #include <gui/graphics.h>
+// #include <gui/box.h>
+// #include <gui/logger.h>
+// #include <gui/print.h>
 
 #include <iostream>
 
@@ -33,46 +32,46 @@ main(int argc, char const *argv[])
 {
   using namespace wumpus;
 
-  auto & g = Graphics::getInstance();
+  // auto & g = Graphics::getInstance();
 
-  World w{4, 4};
+  // World w{4, 4};
 
-  {
-    PlayerPtr pPlayer{new Player{}};
-    AgentPtr  pAgent{new AutoPilot{}};
-
-    pAgent->afterUpdate(print);
-
-    pPlayer->setAgent(std::move(pAgent));
-    w.setPlayer(std::move(pPlayer));
-  }
-
-  w.setRoomType(WUMPUS, 2, 0);
-  w.setRoomType(PIT, 2, 2);
-  w.setRoomType(PIT, 3, 3);
-  w.setRoomType(PIT, 0, 2);
-  w.setRoomType(GOLD, 3, 2);
-
-  // unsigned key;
-  // do
   // {
-  //   Logger::getInstance().log("This is an error");
-  // } while ((key = g.waitNextKey()) != 'q');
+  //   PlayerPtr pPlayer{new Player{}};
+  //   AgentPtr  pAgent{new AutoPilot{}};
+
+  //   pAgent->afterUpdate(print);
+
+  //   pPlayer->setAgent(std::move(pAgent));
+  //   w.setPlayer(std::move(pPlayer));
+  // }
+
+  // w.setRoomType(WUMPUS, 2, 0);
+  // w.setRoomType(PIT, 2, 2);
+  // w.setRoomType(PIT, 3, 3);
+  // w.setRoomType(PIT, 0, 2);
+  // w.setRoomType(GOLD, 3, 2);
+
+  // // unsigned key;
+  // // do
+  // // {
+  // //   Logger::getInstance().log("This is an error");
+  // // } while ((key = g.waitNextKey()) != 'q');
   
-  try
-  {
-    do
-    {
-      unsigned key = g.waitNextKey();
-      if (key == 'q' || key == 'Q')
-        break;
+  // try
+  // {
+  //   do
+  //   {
+  //     unsigned key = g.waitNextKey();
+  //     if (key == 'q' || key == 'Q')
+  //       break;
 
-    } while (w.update());
-  }
-  catch (...)
-  {
+  //   } while (w.update());
+  // }
+  // catch (...)
+  // {
 
-  }
+  // }
 
 
   return 0;

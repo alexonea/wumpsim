@@ -23,32 +23,17 @@
 
 #include <core/room_decl.h>
 
-#include <core/tile.h>
-#include <core/player_decl.h>
-
 namespace wumpus
 {
-  class Room : public Tile
+  class Room
   {
   public:
     Room(const RoomContent& eContent = EMPTY) noexcept;
 
-    void        setPlayer     (PlayerPtr&& pPlayer);
-    PlayerPtr&& releasePlayer ();
-    bool        hasPlayer     ();
-
     void        setContent    (const RoomContent& eContent) noexcept;
-    bool        update        ();
+    RoomContent getContent    () const noexcept;
   private:
-    void        applySensors  ();
-
     RoomContent m_eContent;
-    /*
-     * Each room holds a pointer to a player. This guarantees that only one
-     * player can occupy a tile at all times. Moving a player from one time
-     * to another is done by moving the pointer.
-     */
-    PlayerPtr m_pPlayer;
   };
 }
 

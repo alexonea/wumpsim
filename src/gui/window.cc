@@ -20,7 +20,7 @@
 
 #include <gui/window.h>
 
-#include <core/error.h>
+#include <stdexcept>
 
 #include <iostream>
 
@@ -32,7 +32,7 @@ namespace wumpus
   , m_nHeight{h}
   {
     if (!m_pWindow)
-      throw Error("invalid window");
+      throw std::runtime_error("invalid window");
   }
 
   Window::Window(Window&& other)
@@ -58,7 +58,7 @@ namespace wumpus
   , m_bManaged{false}
   {
     if (!m_pWindow)
-      throw Error("invalid window");
+      throw std::runtime_error("invalid window");
   }
 
   Window::~Window()

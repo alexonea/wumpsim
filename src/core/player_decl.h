@@ -24,10 +24,12 @@
 #include <memory>
 
 #include <core/sensor.h>
+#include <core/tile_decl.h>
+#include <core/position.h>
 
 namespace wumpus
 {
-  enum PlayerOrientation
+  enum Orientation
   {
     UP,
     DOWN,
@@ -35,10 +37,10 @@ namespace wumpus
     RIGHT,
   };
 
+  using TilePos = std::pair<Position, TileRef>;
   using Percept = SensorData;
 
   class Player;
-  using PlayerPtr = std::unique_ptr<Player>;
 }
 
 #endif
