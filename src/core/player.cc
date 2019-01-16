@@ -77,6 +77,9 @@ namespace wumpus
     else if (!m_sensors.isActive(STENCH))
       markSafeAround(m_pCurrent, GUESS_WUMPUS);
 
+    if (m_printCb)
+      m_printCb(m_pCurrent);
+
     return CLIMB;
   }
 
@@ -175,5 +178,11 @@ namespace wumpus
         it->second->resetLeft(pCurrent);
       }
     }
+  }
+
+  void
+  Player::setPrintCb(const PrintCb& printCb) noexcept
+  {
+    m_printCb = printCb;
   }
 }

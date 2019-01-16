@@ -42,6 +42,8 @@ namespace wumpus
 
     unsigned    getArrows     () const noexcept;
     void        setArrows     (unsigned nArrows) noexcept;
+
+    void        setPrintCb    (const PrintCb& printCb) noexcept;
   private:
     unsigned    m_nArrows;
     Percept     m_sensors;
@@ -51,6 +53,7 @@ namespace wumpus
 
     std::map<Position, TileRef> m_vpTiles;
     TileRef                     m_pCurrent;
+    PrintCb                     m_printCb;
 
     void markSafeAround(const TileRef& pCurrent, const Guess& eGuess = OK);
     void updateLinks   (const TileRef& pCurrent);

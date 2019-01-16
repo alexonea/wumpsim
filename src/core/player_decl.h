@@ -22,6 +22,7 @@
 #define SRC_CORE_PLAYER_DECL_H 1
 
 #include <memory>
+#include <functional>
 
 #include <core/sensor.h>
 #include <core/tile_decl.h>
@@ -37,6 +38,7 @@ namespace wumpus
     RIGHT,
   };
 
+  using PrintCb = std::function<void(const TileRef&)>;
   using TilePos = std::pair<Position, TileRef>;
   using Percept = SensorData;
 
