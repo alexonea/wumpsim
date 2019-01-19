@@ -68,7 +68,7 @@ namespace wumpus
   Logger&
   Logger::getInstance()
   {
-    static Logger s_logger{20};
+    static Logger s_logger{10};
     return s_logger;
   }
 }

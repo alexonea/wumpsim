@@ -21,12 +21,12 @@
 #ifndef SRC_GUI_PRINT_H
 #define SRC_GUI_PRINT_H 1
 
-#include <core/path_decl.h>
+#include <core/tile_decl.h>
 #include <core/player_decl.h>
 
 namespace wumpus
 {
-  extern void print(const PathPtr& pCurrent, PlayerOrientation eOrientation);
+  extern void print(const TileRef& pCurrent, Orientation eOrientation, Percept percept);
 }
 
 #endif

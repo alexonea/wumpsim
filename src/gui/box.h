@@ -22,6 +22,8 @@
 #define SRC_GUI_BOX_H 1
 
 #include <core/guess.h>
+#include <core/player_decl.h>
+
 #include <gui/window.h>
 
 #include <memory>
@@ -39,11 +41,13 @@ namespace wumpus
 
     virtual void refresh() const;
 
-    void setGuess(const Guess& guess);
+    void setGuess(const GuessData& guess);
     void setPlayer(unsigned player);
+    void setPercept(const Percept& p);
   private:
     unsigned  m_player;
-    Guess     m_guess;
+    GuessData m_guess;
+    Percept   m_percept;
     unsigned  m_nWidth;
     unsigned  m_nHeight;
   };

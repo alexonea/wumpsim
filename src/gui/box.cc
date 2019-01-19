@@ -20,7 +20,7 @@
 
 #include <gui/box.h>
 
-#include <core/error.h>
+#include <stdexcept>
 
 #include <iostream>
 
@@ -33,7 +33,7 @@ namespace wumpus
   , m_player{' '}
   {
     if (w <= 2 || h <= 2)
-      throw Error("Box too small");
+      throw std::runtime_error("Box too small");
 
     // refresh();
   }
@@ -49,38 +49,64 @@ namespace wumpus
   {
     wborder(m_pWindow, 0, 0, 0, 0, ACS_PLUS, ACS_PLUS, ACS_PLUS, ACS_PLUS);
 
-    init_pair(1, COLOR_BLACK, COLOR_WHITE);
-    init_pair(2, COLOR_BLACK, COLOR_BLACK);
-    init_pair(3, COLOR_CYAN, COLOR_BLACK);
-
-    wattron(m_pWindow, COLOR_PAIR(3));
-    wattron(m_pWindow, A_BOLD);
-    mvwaddch(m_pWindow, 3, 5, m_player);
-    wattroff(m_pWindow, A_BOLD);
-    wattroff(m_pWindow, COLOR_PAIR(3));
-
-    if (!m_guess.isPermanent())
+    if (m_guess.isBump())
     {
-      wattron(m_pWindow, COLOR_PAIR(2));
-      wattron(m_pWindow, A_BOLD);
-      mvwprintw(m_pWindow, m_nHeight - 2, 1, m_guess.toString().c_str());
-      wattroff(m_pWindow, A_BOLD);
-      wattroff(m_pWindow, COLOR_PAIR(2));
+      wbkgd(m_pWindow, ACS_CKBOARD);
     }
     else
     {
-      wattron(m_pWindow, COLOR_PAIR(1));
+      init_pair(1, COLOR_BLACK, COLOR_WHITE);
+      init_pair(2, COLOR_BLACK, COLOR_BLACK);
+      init_pair(3, COLOR_CYAN, COLOR_BLACK);
+
+      if (!m_percept.isZero())
+      {
+        std::string s = "";
+        if (m_percept.isActive(GLITTER))
+          s += "G ";
+
+        if (m_percept.isActive(BREEZE))
+          s += "B ";
+
+        if (m_percept.isActive(STENCH))
+          s += "S ";
+
+        if (m_percept.isActive(BUMP))
+          s += "B ";
+        
+        mvwprintw(m_pWindow, 1, 1, s.c_str());
+      }
+
+      wattron(m_pWindow, COLOR_PAIR(3));
       wattron(m_pWindow, A_BOLD);
-      mvwprintw(m_pWindow, m_nHeight - 2, 1, m_guess.toString().c_str());
+      mvwaddch(m_pWindow, 3, 5, m_player);
       wattroff(m_pWindow, A_BOLD);
-      wattroff(m_pWindow, COLOR_PAIR(1));
+      wattroff(m_pWindow, COLOR_PAIR(3));
+
+      if (!m_guess.isPermanent())
+      {
+        wattron(m_pWindow, COLOR_PAIR(2));
+        wattron(m_pWindow, A_BOLD);
+        mvwprintw(m_pWindow, m_nHeight - 2, 1, m_guess.toString().c_str());
+        wattroff(m_pWindow, A_BOLD);
+        wattroff(m_pWindow, COLOR_PAIR(2));
+      }
+      else
+      {
+        wattron(m_pWindow, COLOR_PAIR(1));
+        wattron(m_pWindow, A_BOLD);
+        mvwprintw(m_pWindow, m_nHeight - 2, 1, m_guess.toString().c_str());
+        wattroff(m_pWindow, A_BOLD);
+        wattroff(m_pWindow, COLOR_PAIR(1));
+      }
     }
+
 
     Window::refresh();
   }
 
   void
-  Box::setGuess(const Guess& guess)
+  Box::setGuess(const GuessData& guess)
   {
     m_guess = guess;
   }
@@ -89,5 +115,11 @@ namespace wumpus
   Box::setPlayer(unsigned player)
   {
     m_player = player;
+  }
+
+  void
+  Box::setPercept(const Percept& p)
+  {
+    m_percept = p;
   }
 }

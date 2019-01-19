@@ -20,7 +20,8 @@
 
 #include <gui/print.h>
 
-#include <core/path.h>
+#include <core/tile.h>
+// #include <core/player.h>
 
 #include <vector>
 #include <gui/box.h>
@@ -36,18 +37,18 @@ namespace wumpus
 {
   static
   unsigned
-  toChar(PlayerOrientation eOrientation)
+  toChar(Orientation eOrientation)
   {
     switch (eOrientation)
     {
       case UP:
-        return ACS_UARROW;
+        return '^';
       case DOWN:
-        return ACS_DARROW;
+        return 'v';
       case LEFT:
-        return ACS_LARROW;
+        return '<';
       case RIGHT: 
-        return ACS_RARROW;
+        return '>';
       default:
         return ' ';
     }
@@ -57,38 +58,39 @@ namespace wumpus
 
   static
   bool
-  beenVisited(Path* ptr, const std::vector<Path*>& v)
+  beenVisited(Tile* ptr, const std::vector<Tile*>& v)
   {
     auto it = std::find(v.begin(), v.end(), ptr);
     return (it != v.end());
   }
 
   void
-  print(const PathPtr& pCurrent, PlayerOrientation eOrientation)
+  print(const TileRef& pCurrent, Orientation eOrientation, Percept percept)
   {
-    const unsigned OFFSETX = 30;
-    const unsigned OFFSETY = 10;
+    const unsigned OFFSETX = 20;
+    const unsigned OFFSETY = 20;
 
     std::vector<Box> vBoxes;
 
-    Position p = pCurrent->getRelativePos();
+    Position p = pCurrent->getPosition();
 
-    unsigned currentX = p.first * 6;
-    unsigned currentY = p.second * 10;
+    unsigned currentX = p.x() * 6;
+    unsigned currentY = p.y() * 10;
     vBoxes.push_back(std::move(Box{OFFSETX + currentX, OFFSETY + currentY}));
 
     Logger::getInstance().log("player location is (%d, %d)\n", currentX, currentY);
 
-    vBoxes[0].setGuess(pCurrent->getGuess());
+    vBoxes[0].setGuess(*((GuessData*) pCurrent.get()));
     vBoxes[0].setPlayer(toChar(eOrientation));
+    vBoxes[0].setPercept(percept);
 
-    std::vector<Path*> visited;
-    std::stack<Path*> todo;
+    std::vector<Tile*> visited;
+    std::stack<Tile*> todo;
 
-    Path* pLeft   = static_cast<Path*>(pCurrent->getLeftRaw());
-    Path* pRight  = static_cast<Path*>(pCurrent->getRightRaw());
-    Path* pUp     = static_cast<Path*>(pCurrent->getUpRaw());
-    Path* pDown   = static_cast<Path*>(pCurrent->getDownRaw());
+    Tile* pLeft   = pCurrent->getLeft().get();
+    Tile* pRight  = pCurrent->getRight().get();
+    Tile* pUp     = pCurrent->getUp().get();
+    Tile* pDown   = pCurrent->getDown().get();
 
     Logger::getInstance().log("printing now...\n");
 
@@ -108,30 +110,28 @@ namespace wumpus
 
     while (!todo.empty())
     {
-      Path* p = todo.top();
+      Tile* p = todo.top();
       todo.pop();
 
       auto it = std::find(visited.begin(), visited.end(), p);
       if (it != visited.end())
         continue;
 
-      Position pos = p->getRelativePos();
-      unsigned currentX = pos.first * 6;
-      unsigned currentY = pos.second * 10;
-
-      Logger::getInstance().log("Print LOCATION: (%d,%d)\n", currentX, currentY);
+      Position pos = p->getPosition();
+      unsigned currentX = pos.x() * 6;
+      unsigned currentY = pos.y() * 10;
 
       Box box{OFFSETX + currentX, OFFSETY + currentY};
-      box.setGuess(p->getGuess());
+      box.setGuess(*((GuessData*) p));
 
       vBoxes.push_back(std::move(box));
 
       visited.push_back(p);
 
-      Path* pLeft   = static_cast<Path*>(p->getLeftRaw());
-      Path* pRight  = static_cast<Path*>(p->getRightRaw());
-      Path* pUp     = static_cast<Path*>(p->getUpRaw());
-      Path* pDown   = static_cast<Path*>(p->getDownRaw());
+      Tile* pLeft   = p->getLeft().get();
+      Tile* pRight  = p->getRight().get();
+      Tile* pUp     = p->getUp().get();
+      Tile* pDown   = p->getDown().get();
 
       if (pLeft)
         todo.push(pLeft);
