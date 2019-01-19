@@ -46,8 +46,16 @@ namespace wumpus
     void markPermanent() noexcept;
     bool isPermanent  () const noexcept;
 
-    // std::string toString() const;
+    void markBump     () noexcept;
+    bool isBump       () const noexcept;
+
+    bool mayBeWumpus  () const noexcept;
+    
+    std::string toString() const;
+  protected:
+    virtual int score () const noexcept;
   private:
+    bool m_bBump;
     bool m_bWumpus;
     bool m_bPit;
     bool m_bPermanent;

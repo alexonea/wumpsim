@@ -20,7 +20,7 @@
 
 #include <core/guess.h>
 
-// #include <sstream>
+#include <sstream>
 
 namespace wumpus
 {
@@ -28,6 +28,7 @@ namespace wumpus
   : m_bWumpus{true}
   , m_bPit{true}
   , m_bPermanent{false}
+  , m_bBump{false}
   {}
 
   void
@@ -52,13 +53,16 @@ namespace wumpus
         return;
     }
 
-    if (isSafe())
-      m_bPermanent = true;
+    if (m_bPit == false && m_bWumpus == false)
+      markSafe();
   }
 
   void
   GuessData::markSafe() noexcept
   {
+    if (m_bPermanent)
+      return;
+
     m_bPit = false;
     m_bWumpus = false;
     m_bPermanent = true;
@@ -67,7 +71,7 @@ namespace wumpus
   bool
   GuessData::isSafe() const noexcept
   {
-    return (m_bWumpus == false && m_bPit == false);
+    return (m_bWumpus == false && m_bPit == false && m_bPermanent == true);
   }
 
   void
@@ -82,29 +86,61 @@ namespace wumpus
     return m_bPermanent;
   }
 
-  // std::string
-  // GuessData::toString() const
-  // {
-  //   std::stringstream ss;
+
+  void
+  GuessData::markBump() noexcept
+  {
+    /*
+     * Mark pit and wumpus so that tile will not be "safe", thus will not be
+     * considered when calculating choices.
+     */
+    m_bWumpus = true;
+    m_bPit = true;
+    m_bBump = true;
+    m_bPermanent = true;
+  }
+
+  bool
+  GuessData::isBump() const noexcept
+  {
+    return (m_bBump == true);
+  }
+
+  bool
+  GuessData::mayBeWumpus() const noexcept
+  {
+    return (m_bWumpus && !m_bPermanent);
+  }
+
+  std::string
+  GuessData::toString() const
+  {
+    std::stringstream ss;
     
-  //   if (isPermanent())
-  //   {
-  //     if (isSafe())
-  //       ss << "OK";
-  //     else if (m_bPit)
-  //       ss << "PIT";
-  //     else
-  //       ss << "WUMPUS";
-  //   }
-  //   else
-  //   {
-  //     if (m_bPit)
-  //       ss << "P? ";
+    if (isPermanent())
+    {
+      if (isSafe())
+        ss << "OK";
+      else if (m_bPit)
+        ss << "PIT";
+      else
+        ss << "WUMPUS";
+    }
+    else
+    {
+      if (m_bPit)
+        ss << "P? ";
 
-  //     if (m_bWumpus)
-  //       ss << "W?";
-  //   }
+      if (m_bWumpus)
+        ss << "W?";
+    }
 
-  //   return ss.str();
-  // }
+    return ss.str();
+  }
+
+  int
+  GuessData::score() const noexcept
+  {
+    return 10 * isSafe();
+  }
 }
