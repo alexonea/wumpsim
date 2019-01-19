@@ -26,9 +26,12 @@
 #include <core/agent.h>
 
 #include <map>
+#include <queue>
 
 namespace wumpus
 {
+  using Choice = std::pair<TileRef, Orientation>;
+  
   class Player : public Agent
   {
   public:
@@ -53,10 +56,28 @@ namespace wumpus
 
     std::map<Position, TileRef> m_vpTiles;
     TileRef                     m_pCurrent;
+    TileRef                     m_pLast;
     PrintCb                     m_printCb;
 
-    void markSafeAround(const TileRef& pCurrent, const Guess& eGuess = OK);
-    void updateLinks   (const TileRef& pCurrent);
+    void markSafeAround (const TileRef& pCurrent, const Guess& eGuess = OK);
+    void expandAround   (const TileRef& pCurrent);
+    void updateLinks    (const TileRef& pCurrent);
+
+    std::vector<Choice> m_wumpus;
+    bool                m_bWumpusKilled;
+    bool                m_bGoldGrabbed;
+
+    void   checkWumpusLocation(std::vector<Choice>& v);
+    Action killWumpus(const Orientation& o);
+
+    std::queue<Action>    m_actions;
+
+    Action goHome   ();
+    Action turn     (const Orientation& o);
+    Action doNext   (const Action& next);
+
+    std::vector<TileRef>   m_vPathHome;
+    void addToPathHome(const TileRef& c);
   };
 }
 

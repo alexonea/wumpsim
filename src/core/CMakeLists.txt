@@ -5,6 +5,7 @@ set(SOURCES
   sensor.cc
   player.cc
   position.cc
+  game.cc
   agent.cc
   guess.cc
 )

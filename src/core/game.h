@@ -1,5 +1,5 @@
 /*
- *  room_decl.h
+ *  game.h
  *
  *  Copyright (C) 2019 Alexandru N. Onea <alexandru.onea@toporcomputing.com>
  *
@@ -18,21 +18,39 @@
  *
  */
 
-#ifndef SRC_CORE_ROOM_DECL_H
-#define SRC_CORE_ROOM_DECL_H 1
+#ifndef SRC_CORE_GAME_H
+#define SRC_CORE_GAME_H 1
+
+#include <core/player_decl.h>
+#include <core/world.h>
+#include <core/position.h>
+
+#include <memory>
 
 namespace wumpus
 {
-  enum RoomContent
-  {
-    INVALID = 0,
-    EMPTY,
-    PIT,
-    WUMPUS,
-    GOLD,
-  };
+  using WorldRef  = std::unique_ptr<World>;
+  using PlayerRef = std::unique_ptr<Player>;
 
-  class Room;
+  class Game
+  {
+  public:
+    Game(WorldRef&& pWorld) noexcept;
+
+    void setPlayer(PlayerRef&& pPlayer, Position pos = {0, 0}) noexcept;
+    bool advance  ();
+
+    WorldRef&   getWorld() noexcept;
+    PlayerRef&  getPlayer() noexcept;
+
+  private:
+    WorldRef  m_pWorld;
+    PlayerRef m_pPlayer;
+    Position  m_playerPos;
+
+    int       m_iScore;
+  };
 }
+
 
 #endif

@@ -23,24 +23,30 @@
 
 #include <memory>
 #include <functional>
+#include <ostream>
+#include <string>
 
 #include <core/sensor.h>
 #include <core/tile_decl.h>
 #include <core/position.h>
 
+
 namespace wumpus
 {
   enum Orientation
   {
-    UP,
-    DOWN,
+    UP = 0,
     LEFT,
+    DOWN,
     RIGHT,
   };
 
-  using PrintCb = std::function<void(const TileRef&)>;
-  using TilePos = std::pair<Position, TileRef>;
+  extern std::string   toString  (Orientation o);
+  extern std::ostream& operator<<(std::ostream& os, Orientation o);
+
   using Percept = SensorData;
+  using TilePos = std::pair<Position, TileRef>;
+  using PrintCb = std::function<void(const TileRef&, Orientation, Percept)>;
 
   class Player;
 }
