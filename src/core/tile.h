@@ -44,6 +44,11 @@ namespace wumpus
 
     void      setPosition(const Position& relPosition);
     Position  getPosition() const;
+
+    void      setVisited(bool bVisited = true) noexcept;
+    bool      isVisited() const noexcept;
+    
+    virtual int score() const noexcept override;
   private:
     /*
      * Each tile holds 4 pointers to the neighbouring tiles.
@@ -53,8 +58,9 @@ namespace wumpus
     TileRef   m_pLeft;
     TileRef   m_pRight;
 
-    Guess     m_guess;
     Position  m_relPosition;
+
+    int       m_nVisited;
   };
 }
 

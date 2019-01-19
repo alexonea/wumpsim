@@ -24,6 +24,7 @@ namespace wumpus
 {
   Tile::Tile(Position relPosition)
   : m_relPosition{relPosition}
+  , m_nVisited{0}
   {}
 
   TileRef
@@ -84,5 +85,26 @@ namespace wumpus
   Tile::getPosition() const
   {
     return m_relPosition;
+  }
+
+  void
+  Tile::setVisited(bool bVisited) noexcept
+  {
+    if (bVisited)
+      m_nVisited++;
+    else
+      m_nVisited--;
+  }
+
+  bool
+  Tile::isVisited() const noexcept
+  {
+    return (m_nVisited > 0);
+  }
+
+  int
+  Tile::score() const noexcept
+  {
+    return GuessData::score() + 10 * isVisited() - 4 * m_nVisited;
   }
 }
