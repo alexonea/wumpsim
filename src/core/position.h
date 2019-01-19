@@ -30,6 +30,9 @@ namespace wumpus
   public:
     Position(int iX = 0, int iY = 0);
     Position(const std::pair<int, int>& pos);
+
+    int x() const noexcept { return m_pos.first;  };
+    int y() const noexcept { return m_pos.second; };
   private:
     std::pair<int, int> m_pos;
 
