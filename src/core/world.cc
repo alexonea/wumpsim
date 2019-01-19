@@ -20,8 +20,6 @@
 
 #include <core/world.h>
 
-#include <core/room.h>
-
 namespace wumpus
 {
   World::World(unsigned nRows, unsigned nCols)
@@ -38,5 +36,15 @@ namespace wumpus
 
     unsigned long p = iX * m_nRows + iY;
     m_vRooms[p].setContent(eContent);
+  }
+
+  RoomContent
+  World::getRoomType(unsigned iX, unsigned iY)
+  {
+    if (iX >= m_nRows || iY >= m_nCols)
+      return INVALID;
+
+    unsigned long p = iX * m_nRows + iY;
+    return m_vRooms[p].getContent();
   }
 }

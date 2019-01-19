@@ -21,7 +21,7 @@
 #ifndef SRC_CORE_WORLD_H
 #define SRC_CORE_WORLD_H 1
 
-#include <core/room_decl.h>
+#include <core/room.h>
 
 #include <vector>
 
@@ -33,6 +33,7 @@ namespace wumpus
     World(unsigned nRows, unsigned nCols);
 
     void setRoomType(const RoomContent& eContent, unsigned iX, unsigned iY);
+    RoomContent getRoomType(unsigned iX, unsigned iY);
   private:
     unsigned             m_nRows;
     unsigned             m_nCols;
